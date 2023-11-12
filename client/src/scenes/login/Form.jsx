@@ -72,23 +72,33 @@ const Form = () => {
   };
 
   const login = async (values, onSubmitProps) => {
-    const loggedInResponse = await fetch("http://localhost:4000/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(values),
-    });
-    const loggedIn = await loggedInResponse.json();
-    onSubmitProps.resetForm();
-    if (loggedIn) {
-      dispatch(
-        setLogin({
-          user: loggedIn.user,
-          token: loggedIn.token,
-        })
-      );
-      navigate("/home");
+    try {
+      console.log("Logging in with values:", values);
+      const loggedInResponse = await fetch("http://localhost:4000/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
+      });
+      const loggedIn = await loggedInResponse.json();
+      console.log("Logged in response:", loggedIn);
+      onSubmitProps.resetForm();
+  
+      if (loggedIn) {
+        console.log("Dispatching login action with user:", loggedIn.user);
+        dispatch(
+          setLogin({
+            user: loggedIn.user,
+            token: loggedIn.token,
+          })
+        );
+        console.log("Navigating to /home");
+        navigate("/home");
+      }
+    } catch (error) {
+      console.error("Error during login:", error);
     }
   };
+  
 
   const handleFormSubmit = async (values, onSubmitProps) => {
     if (isLogin) await login(values, onSubmitProps);
@@ -224,7 +234,7 @@ const Form = () => {
             >
               {isLogin
                 ? "Don't have an account? Sign Up here."
-                : "Already have an account? Login here."}
+                : "Already have an account? Sign In here."}
             </Typography>
             </Box>
         </form>

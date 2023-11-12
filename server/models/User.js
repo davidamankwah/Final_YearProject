@@ -33,11 +33,7 @@ const UserSchema = new mongoose.Schema(
       },
       profileViews: {
       type: Number,
-      default: 0, // Renamed from 'viewedProfile'
-    },
-    impressions: {
-      type: Number,
-      default: 0, // Renamed from 'impression'
+      default: 0, 
     },
     },
      { timestamps: true } // Add timestamps to the schema

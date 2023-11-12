@@ -9,8 +9,10 @@ import helmet from "helmet";
 import morgan from "morgan";
 import path from "path";
 import { fileURLToPath } from "url";
+import userRoutes from "./routes/user.js";
 import authRoutes from "./routes/auth.js";
 import { register } from "./controller/auth.js";
+import User from "./models/User.js";
 
 
 
@@ -49,6 +51,7 @@ app.post("/auth/register", upload.single("image"), register);
 
  // ROUTES 
 app.use("/auth", authRoutes);
+app.use("/user", userRoutes);
 
 //Mongoose set up
 const PORT = process.env.PORT || 6001; // Set port to 4000 or 6001 as backup
