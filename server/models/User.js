@@ -14,7 +14,7 @@ const UserSchema = new mongoose.Schema(
         type: String,
         required: true,
         max: 40,
-        unique: false,
+        unique: true,
       },
       password: {
         type: String,
@@ -31,8 +31,14 @@ const UserSchema = new mongoose.Schema(
         type: Array,
         default: [],
       },
-      viewedProfile: Number,
-      impression: Number,
+      profileViews: {
+      type: Number,
+      default: 0, // Renamed from 'viewedProfile'
+    },
+    impressions: {
+      type: Number,
+      default: 0, // Renamed from 'impression'
+    },
     },
      { timestamps: true } // Add timestamps to the schema
 );
