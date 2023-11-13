@@ -10,7 +10,7 @@ export const register = async (req, res) => {
       userName,
       emailAddress,
       password,
-      profileImage,
+      picturePath,
       followers,
     } = req.body;
 
@@ -32,7 +32,7 @@ export const register = async (req, res) => {
       userName,
       emailAddress,
       password: passwordHash,
-      profileImage,
+      picturePath,
       followers,
       profileViews: Math.floor(Math.random() * 10000),
     });

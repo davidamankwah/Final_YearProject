@@ -20,14 +20,14 @@ const signUpSchema = yup.object().shape({
   userName: yup.string().required("required"),
   emailAddress: yup.string().email("invalid email").required("required"),
   password: yup.string().required("required"),
-  image: yup.string().required("required"),
+  pic: yup.string().required("required"),
 });
 
 const signUpinitial = {
   userName: "",
   emailAddress: "",
   password: "",
-  image: "",
+  pic: "",
 };
 
 const signInSchema = yup.object().shape({
@@ -56,7 +56,7 @@ const Form = () => {
     for (let value in values) {
       formData.append(value, values[value]);
     }
-    formData.append("picturePath", values.image.name);
+    formData.append("picturePath", values.pic.name);
 
   const savedUserResponse = await fetch("http://localhost:4000/auth/register", {
   method: "POST",
@@ -154,7 +154,7 @@ const Form = () => {
                     acceptedFiles=".jpg,.jpeg,.png"
                     multiple={false}
                     onDrop={(acceptedFiles) =>
-                      setFieldValue("image", acceptedFiles[0])
+                      setFieldValue("pic", acceptedFiles[0])
                     }
                   >
                      {({ getRootProps, getInputProps }) => (
@@ -165,11 +165,11 @@ const Form = () => {
                         sx={{ "&:hover": { cursor: "pointer" } }}
                       >
                         <input {...getInputProps()} />
-                        {!values.image ? (
+                        {!values.pic ? (
                           <p>Add Image</p>
                         ) : (
                           <FlexBetween>
-                            <Typography>{values.image.name}</Typography>
+                            <Typography>{values.pic.name}</Typography>
                             <EditOutlinedIcon />
                           </FlexBetween>
                         )}
@@ -216,7 +216,7 @@ const Form = () => {
                "&:hover": { color: palette.primary.main },
              }}
             >
-               {isLogin ? "LOGIN" : "REGISTER"}
+               {isLogin ? "SIGN IN" : "SIGN UP"}
             </Button>
               <Typography
               onClick={() => {

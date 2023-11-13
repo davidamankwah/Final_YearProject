@@ -1,25 +1,22 @@
 import { Box } from "@mui/material";
 import { styled } from "@mui/system";
 
-const StyledProfileImage = styled(Box)(({ theme }) => ({
-  borderRadius: "50%",
-  overflow: "hidden",
-  boxShadow: "0px 0px 5px 0px rgba(0, 0, 0, 0.1)",
-  "& img": {
-    width: "100%",
-    height: "100%",
-    objectFit: "cover",
-  },
-}));
-
 const ProfileImage = ({ image, size = "60px" }) => {
+  // Check if picture is not defined or an empty string
+  if (!image) {
+    return null; // or provide a default image or placeholder
+  }
+
   return (
-    <StyledProfileImage width={size} height={size}>
+    <Box width={size} height={size}>
       <img
+        style={{ objectFit: "cover", borderRadius: "50%" }}
+        width={size}
+        height={size}
         alt="user"
         src={`http://localhost:4000/assets/${image}`}
       />
-    </StyledProfileImage>
+    </Box>
   );
 };
 

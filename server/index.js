@@ -47,11 +47,11 @@ const upload = multer({ storage });  // Create a multer middleware instance with
 
 // ROUTES WITH FILES 
 
-app.post("/auth/register", upload.single("image"), register);
+app.post("/auth/register", upload.single("pic"), register);
 
  // ROUTES 
 app.use("/auth", authRoutes);
-app.use("/user", userRoutes);
+app.use("/users", userRoutes);
 
 //Mongoose set up
 const PORT = process.env.PORT || 6001; // Set port to 4000 or 6001 as backup
