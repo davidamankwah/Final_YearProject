@@ -54,7 +54,7 @@ app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
 
 //Mongoose set up
-const PORT = process.env.PORT || 6001; // Set port to 4000 or 6001 as backup
+const PORT = process.env.PORT; // Set port to 4000 
 
 // Connect to the database
 mongoose
