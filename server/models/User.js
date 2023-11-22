@@ -31,10 +31,6 @@ const UserSchema = new mongoose.Schema(
         type: Array,
         default: [],
       },
-      profileViews: {
-      type: Number,
-      default: 0, 
-    },
     },
      { timestamps: true } // Add timestamps to the schema
 );

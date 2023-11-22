@@ -1,8 +1,5 @@
 import {
   ManageAccountsOutlined,
-  EditOutlined,
-  LocationOnOutlined,
-  WorkOutlineOutlined,
 } from "@mui/icons-material";
 import { Box, Typography, Divider, useTheme } from "@mui/material";
 import ProfileImage from "../../components/ProfileImage";
@@ -38,7 +35,7 @@ const CustomUserWidget = ({ userId, picturePath }) => {
     return null;
   }
 
-  const { userName, profileViews, followers } = user;
+  const { userName, followers } = user;
 
   return (
     <StyledWrapper>
@@ -69,15 +66,6 @@ const CustomUserWidget = ({ userId, picturePath }) => {
         <ManageAccountsOutlined />
       </FlexBetween>
 
-      <Divider />
-      <Box p="1rem 0">
-        <FlexBetween mb="0.5rem">
-          <Typography color={medium}>Who's viewed your profile</Typography>
-          <Typography color={palette.primary.main} fontWeight="500">
-            {profileViews}
-          </Typography>
-        </FlexBetween>
-      </Box>
     </StyledWrapper>
   );
 };

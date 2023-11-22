@@ -6,13 +6,7 @@ import User from "../models/User.js";
 
 export const register = async (req, res) => {
   try {
-    const {
-      userName,
-      emailAddress,
-      password,
-      picturePath,
-      followers,
-    } = req.body;
+    const { userName, emailAddress, password, picturePath,followers} = req.body;
 
     // Check if the email address is missing or null
     if (!emailAddress) {
@@ -20,8 +14,8 @@ export const register = async (req, res) => {
     }
 
     // Check if the email address already exists
-    const existingUser = await User.findOne({ emailAddress });
-    if (existingUser) {
+    const existEmail = await User.findOne({ emailAddress });
+    if (existEmail) {
       return res.status(400).json({ error: "Email address already in use" });
     }
 
@@ -34,7 +28,6 @@ export const register = async (req, res) => {
       password: passwordHash,
       picturePath,
       followers,
-      profileViews: Math.floor(Math.random() * 10000),
     });
 
     const savedUser = await newUser.save();

@@ -6,6 +6,7 @@ import Navbar from "../navbar";
 import FollowersWidget from "../widget/FollowersWidget";
 import CustomUserWidget from "../widget/customUserWidget";
 
+
 const ProfilePage = () => {
   const [user, setUser] = useState(null);
   const { userId } = useParams();
@@ -43,7 +44,9 @@ const ProfilePage = () => {
           <FollowersWidget userId={userId} />
         </Box>
       </Box>
+
     </Box>
+    
   );
 };
 

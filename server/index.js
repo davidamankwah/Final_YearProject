@@ -7,13 +7,14 @@ import dotenv from "dotenv";
 import multer from "multer";
 import helmet from "helmet";
 import morgan from "morgan";
+import { createPost } from "./controller/post.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import userRoutes from "./routes/user.js";
 import authRoutes from "./routes/auth.js";
+import postRoutes from "./routes/post.js"
+import { checkToken } from "./middleware/auth.js";
 import { register } from "./controller/auth.js";
-import User from "./models/User.js";
-
 
 
 //Configurations of dependecies 
@@ -46,19 +47,21 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });  // Create a multer middleware instance with the configured storage
 
 // ROUTES WITH FILES 
-
 app.post("/auth/register", upload.single("pic"), register);
+app.post("/posts", checkToken, upload.single("pic"), createPost);
 
  // ROUTES 
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
+app.use("/posts", postRoutes);
+
 
 //Mongoose set up
-const PORT = process.env.PORT; // Set port to 4000 
+const PORT = process.env.PORT || 4001; // Set port to 4000 
 
 // Connect to the database
 mongoose
-  .connect(process.env.MONGO_URL, {
+  .connect('mongodb+srv://marksarfo87:admin@cluster0.q7a5lbl.mongodb.net/?retryWrites=true&w=majority', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   }).then(() => {

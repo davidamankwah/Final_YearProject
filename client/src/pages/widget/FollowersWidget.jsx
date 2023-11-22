@@ -11,6 +11,7 @@ const FollowersWidget = ({ userId }) => {
   const token = useSelector((state) => state.token);
   const followers = useSelector((state) => state.user.followers);
 
+  // Function to fetch followers for the given user
   const getFollowers = async () => {
     const response = await fetch(
       `http://localhost:4000/users/${userId}/followers`,
@@ -24,11 +25,13 @@ const FollowersWidget = ({ userId }) => {
   };
 
   useEffect(() => {
+    // Fetch followers when the component mounts
     getFollowers();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [userId, token]); // Added dependencies to useEffect
 
   return (
     <StyledWrapper>
+        {/* Display the title */}
       <Typography
         color={palette.neutral.dark}
         variant="h5"
@@ -37,6 +40,8 @@ const FollowersWidget = ({ userId }) => {
       >
         Following
       </Typography>
+
+       {/* Display the list of followers */}
       <Box display="flex" flexDirection="column" gap="1.5rem">
         {followers.map((follower) => (
           <Follower

@@ -18,9 +18,10 @@ const Follower = ({ followerId, name,userPicturePath }) => {
   const primaryDark = palette.primary.dark;
   const main = palette.neutral.main;
 
-
+  // Check if the user is already a follower
   const isFollower = followers.find((follower) => follower._id === followerId);
 
+  // Function to toggle follower status
   const patchFollower = async () => {
     const response = await fetch(
       `http://localhost:4000/users/${_id}/${followerId}`,
