@@ -11,7 +11,7 @@ export const getUserById = async (req, res) => {
   }
 };
 
-export const getUserFollowersList = async (req, res) => {
+export const getUserFollowers = async (req, res) => {
   try {
     const { id } = req.params;
     const user = await User.findById(id);
@@ -37,9 +37,9 @@ export const addOrRemoveFollowers = async (req, res) => {
     const user = await User.findById(id);
     const follower = await User.findById(followerId);
 
-    if (user.friends.includes(followerId)) {
-      user.friends = user.followers.filter((id) => id !== followerId);
-      follower.friends = follower.friends.filter((id) => id !== id);
+    if (user.followers.includes(followerId)) {
+      user.followers = user.followers.filter((id) => id !== followerId);
+      follower.followers = follower.followers.filter((id) => id !== id);
     } else {
       user.followers.push(followerId);
       follower.followers.push(id);

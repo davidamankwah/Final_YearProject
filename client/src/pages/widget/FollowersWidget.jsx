@@ -27,7 +27,7 @@ const FollowersWidget = ({ userId }) => {
   useEffect(() => {
     // Fetch followers when the component mounts
     getFollowers();
-  }, [userId, token]); // Added dependencies to useEffect
+  }, []); 
 
   return (
     <StyledWrapper>
@@ -43,12 +43,12 @@ const FollowersWidget = ({ userId }) => {
 
        {/* Display the list of followers */}
       <Box display="flex" flexDirection="column" gap="1.5rem">
-        {followers.map((follower) => (
+        {Array.isArray(followers) && followers.map((follower) => (
           <Follower
             key={follower._id}
-            friendId={follower._id}
+            followerId={follower._id}
             name={`${follower.userName}`}
-            userPicturePath={follower.picturePath}
+            profileImage={follower.picturePath}
           />
         ))}
       </Box>

@@ -6,7 +6,7 @@ import { setFollowers } from "../state";
 import FlexBetween from "../components/FlexBetween";
 import ProfileImage from "../components/ProfileImage";
 
-const Follower = ({ followerId, name,userPicturePath }) => {
+const Follower = ({ followerId, name,profileImage }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { _id } = useSelector((state) => state.user);
@@ -19,7 +19,8 @@ const Follower = ({ followerId, name,userPicturePath }) => {
   const main = palette.neutral.main;
 
   // Check if the user is already a follower
-  const isFollower = followers.find((follower) => follower._id === followerId);
+  const isFollower = Array.isArray(followers) && followers.find((follower) => follower._id === followerId);
+
 
   // Function to toggle follower status
   const patchFollower = async () => {
@@ -40,7 +41,7 @@ const Follower = ({ followerId, name,userPicturePath }) => {
   return (
     <FlexBetween>
       <FlexBetween gap="1rem">
-        <ProfileImage image={userPicturePath} size="55px" />
+        <ProfileImage image={profileImage} size="55px" />
         <Box
           onClick={() => {
             navigate(`/profile/${followerId}`);

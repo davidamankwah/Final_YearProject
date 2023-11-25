@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import { styled } from "@mui/system";
+
 
 const ProfileImage = ({ image, size = "60px" }) => {
   // Check if picture is not defined or an empty string
