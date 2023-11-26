@@ -1,22 +1,5 @@
-import {
-    EditOutlined,
-    DeleteOutlined,
-    AttachFileOutlined,
-    GifBoxOutlined,
-    ImageOutlined,
-    MicOutlined,
-    MoreHorizOutlined,
-  } from "@mui/icons-material";
-  import {
-    Box,
-    Divider,
-    Typography,
-    InputBase,
-    useTheme,
-    Button,
-    IconButton,
-    useMediaQuery,
-  } from "@mui/material";
+import {EditOutlined,DeleteOutlined,ImageOutlined,} from "@mui/icons-material";
+  import { Box, Divider, Typography, InputBase, useTheme, Button, IconButton, useMediaQuery,} from "@mui/material";
   import FlexBetween from "../../components/FlexBetween";
   import Dropzone from "react-dropzone";
   import ProfileImage from "../../components/ProfileImage";
@@ -33,11 +16,12 @@ import {
     const { palette } = useTheme();
     const { _id } = useSelector((state) => state.user);
     const token = useSelector((state) => state.token);
-    const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
     const mediumMain = palette.neutral.mediumMain;
     const medium = palette.neutral.medium;
   
+    // Function to handle post creation
     const handlePost = async () => {
+      //Creating a FormData object to handle multipart form data
       const formData = new FormData();
       formData.append("userId", _id);
       formData.append("text", post);
@@ -45,14 +29,16 @@ import {
         formData.append("pic", image);
         formData.append("picturePath", image.name);
       }
-  
+      // Sending a POST request to create a new post
       const response = await fetch(`http://localhost:4000/posts`, {
         method: "POST",
         headers: { Permitted: `Bearer ${token}` },
         body: formData,
       });
+      // Updating the Redux state with the new posts
       const posts = await response.json();
       dispatch(setPosts({ posts }));
+      // Resetting state variables after successful post creation
       setImage(null);
       setPost("");
     };
@@ -60,9 +46,11 @@ import {
     return (
       <StyledWrapper>
         <FlexBetween gap="1.5rem">
+          {/* Displaying the profile image */}
           <ProfileImage image={picturePath} />
+          {/* Input field for post text */}
           <InputBase
-            placeholder="What's on your mind..."
+            placeholder="What is happening?!"
             onChange={(e) => setPost(e.target.value)}
             value={post}
             sx={{
@@ -73,6 +61,7 @@ import {
             }}
           />
         </FlexBetween>
+        {/* Image upload section */}
         {isImage && (
           <Box
             border={`1px solid ${medium}`}
@@ -117,10 +106,12 @@ import {
             </Dropzone>
           </Box>
         )}
-  
+         {/* Divider between post input and options */}
         <Divider sx={{ margin: "1.25rem 0" }} />
-  
+
+        {/* Options for adding image and posting */}            
         <FlexBetween>
+           {/* Option to add or remove an image */}
           <FlexBetween gap="0.25rem" onClick={() => setIsImage(!isImage)}>
             <ImageOutlined sx={{ color: mediumMain }} />
             <Typography
@@ -130,30 +121,7 @@ import {
               Image
             </Typography>
           </FlexBetween>
-  
-          {isNonMobileScreens ? (
-            <>
-              <FlexBetween gap="0.25rem">
-                <GifBoxOutlined sx={{ color: mediumMain }} />
-                <Typography color={mediumMain}>Clip</Typography>
-              </FlexBetween>
-  
-              <FlexBetween gap="0.25rem">
-                <AttachFileOutlined sx={{ color: mediumMain }} />
-                <Typography color={mediumMain}>Attachment</Typography>
-              </FlexBetween>
-  
-              <FlexBetween gap="0.25rem">
-                <MicOutlined sx={{ color: mediumMain }} />
-                <Typography color={mediumMain}>Audio</Typography>
-              </FlexBetween>
-            </>
-          ) : (
-            <FlexBetween gap="0.25rem">
-              <MoreHorizOutlined sx={{ color: mediumMain }} />
-            </FlexBetween>
-          )}
-  
+           {/* Button to submit the post, disabled if no text is entered */}
           <Button
             disabled={!post}
             onClick={handlePost}

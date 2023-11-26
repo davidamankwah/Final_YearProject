@@ -6,7 +6,9 @@ import { setFollowers } from "../state";
 import FlexBetween from "../components/FlexBetween";
 import ProfileImage from "../components/ProfileImage";
 
+// Importing necessary dependencies and components
 const Follower = ({ followerId, name,profileImage }) => {
+  // Redux hooks for dispatching actions and accessing state
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { _id } = useSelector((state) => state.user);
@@ -24,16 +26,18 @@ const Follower = ({ followerId, name,profileImage }) => {
 
   // Function to toggle follower status
   const patchFollower = async () => {
+    // Sending a PATCH request to update follower status
     const response = await fetch(
       `http://localhost:4000/users/${_id}/${followerId}`,
       {
         method: "PATCH",
         headers: {
-          Permitted: `Bearer ${token}`,
+          Permitted: `Bearer ${token}`, // Including the bearer token for authentication
           "Content-Type": "application/json",
         },
       }
     );
+    // Dispatching an action to update the Redux state with the new followers list
     const data = await response.json();
     dispatch(setFollowers({ followers: data }));
   };
@@ -41,6 +45,7 @@ const Follower = ({ followerId, name,profileImage }) => {
   return (
     <FlexBetween>
       <FlexBetween gap="1rem">
+        {/* Displaying the profile image and navigating to the follower's profile on click */}
         <ProfileImage image={profileImage} size="55px" />
         <Box
           onClick={() => {
@@ -48,6 +53,7 @@ const Follower = ({ followerId, name,profileImage }) => {
             navigate(0);
           }}
         >
+          {/* Displaying the follower's name with a hover effect for navigation */}
           <Typography
             color={main}
             variant="h5"
@@ -63,6 +69,7 @@ const Follower = ({ followerId, name,profileImage }) => {
           </Typography>
         </Box>
       </FlexBetween>
+       {/* Button to toggle follower status, displaying different icons based on the current status */}
       <IconButton
         onClick={() => patchFollower()}
         sx={{ backgroundColor: primaryLight, p: "0.6rem" }}
@@ -77,4 +84,5 @@ const Follower = ({ followerId, name,profileImage }) => {
   );
 };
 
+// Exporting the Follower component for use in other parts of the application
 export default Follower;

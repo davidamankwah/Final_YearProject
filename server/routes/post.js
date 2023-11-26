@@ -1,14 +1,23 @@
+// Importing the Express framework for handling routes
 import express from "express";
-import { getFeedPosts, getUserPosts, likePost } from "../controller/post.js";
-import {checkToken } from "../middleware/auth.js";
 
+// Importing controller functions for post-related operations
+import { getFeedPosts, getUserPosts, likePost } from "../controller/post.js";
+
+// Importing middleware for checking authentication tokens
+import { checkToken } from "../middleware/auth.js";
+
+// Creating an Express router
 const router = express.Router();
 
-/* READ */
+// Route to get the feed posts, requiring authentication check
 router.get("/", checkToken, getFeedPosts);
+
+// Route to get posts associated with a specific user, requiring authentication check
 router.get("/:userId/posts", checkToken, getUserPosts);
 
-/* UPDATE */
+// Route to like or unlike a post, requiring authentication check
 router.patch("/:id/like", checkToken, likePost);
 
+// Exporting the router for use in other parts of the application
 export default router;

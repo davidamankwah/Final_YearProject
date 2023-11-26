@@ -7,7 +7,7 @@ import dotenv from "dotenv";
 import multer from "multer";
 import helmet from "helmet";
 import morgan from "morgan";
-import { createPost } from "./controller/post.js";
+import { createPost } from "./controller/post.js"; // Importing controller functions to create a new post
 import path from "path";
 import { fileURLToPath } from "url";
 import userRoutes from "./routes/user.js";
@@ -47,8 +47,8 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });  // Create a multer middleware instance with the configured storage
 
 // ROUTES WITH FILES 
-app.post("/auth/register", upload.single("pic"), register);
-app.post("/posts", checkToken, upload.single("pic"), createPost);
+app.post("/auth/register", upload.single("pic"), register); // Route for creating a new user and handling file upload
+app.post("/posts", checkToken, upload.single("pic"), createPost); // Route for creating a new post, requiring authentication check and handling file upload
 
  // ROUTES 
 app.use("/auth", authRoutes);

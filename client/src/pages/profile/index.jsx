@@ -5,13 +5,13 @@ import { useParams } from "react-router-dom";
 import Navbar from "../navbar";
 import FollowersWidget from "../widget/FollowersWidget";
 import CustomUserWidget from "../widget/customUserWidget";
-
+import "./profile.css";
 
 const ProfilePage = () => {
   const [user, setUser] = useState(null);
   const { userId } = useParams();
   const token = useSelector((state) => state.token);
-  const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
+
 
   const getUser = async () => {
     const response = await fetch(`http://localhost:4000/users/${userId}`, {
@@ -31,22 +31,15 @@ const ProfilePage = () => {
   return (
     <Box>
       <Navbar />
-      <Box
-        width="100%"
-        padding="2rem 6%"
-        display={isNonMobileScreens ? "flex" : "block"}
-        gap="2rem"
-        justifyContent="center"
-      >
-        <Box flexBasis={isNonMobileScreens ? "26%" : undefined}>
+      <div className="profilePage">
+        <div className="profilePageSection">
           <CustomUserWidget userId={userId} picturePath={user.picturePath} />
-          <Box m="2rem 0" />
-          <FollowersWidget userId={userId} />
-        </Box>
-      </Box>
-
+          <div className="profilePageSection large">
+            <FollowersWidget userId={userId} />
+          </div>
+        </div>
+      </div>
     </Box>
-    
   );
 };
 

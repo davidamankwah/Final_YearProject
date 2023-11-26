@@ -5,35 +5,29 @@ import CustomUserWidget from "../widget/customUserWidget";
 import FollowersWidget from "../widget/FollowersWidget";
 import PostsWid from "../widget/PostsWid";
 import UserPostWidget from "../widget/UserPostWidget";
+import "./home.css";
 
 const HomePage = () => {
-    const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
-    const { _id, picturePath } = useSelector((state) => state.user);
-    return (
-        <Box>
-             <Navbar />
-          <Box
-            width="100%"
-            padding="2rem 6%"
-            display={isNonMobileScreens ? "flex" : "block"}
-            gap="0.5rem"
-            justifyContent="space-between"
-          >
-            <Box flexBasis={isNonMobileScreens ? "26%" : undefined}>
-              <CustomUserWidget userId={_id} picturePath={picturePath} />
-            </Box>
-            <Box
-          flexBasis={isNonMobileScreens ? "42%" : undefined}
-          mt={isNonMobileScreens ? undefined : "2rem"}
-        >
+  const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
+  const { _id, picturePath } = useSelector((state) => state.user);
+
+  return (
+    <Box>
+      <Navbar />
+      <div className="homePage">
+        <div className="homePageSection">
+          <CustomUserWidget userId={_id} picturePath={picturePath} />
+        </div>
+        <div className="homePageSection large">
           <UserPostWidget picturePath={picturePath} />
           <PostsWid userId={_id} />
-        </Box>
-            <Box flexBasis={isNonMobileScreens ? "26%" : undefined}>
-            <FollowersWidget userId={_id} />
-            </Box>
-          </Box>
-        </Box>
-      );
+        </div>
+        <div className="homePageSection">
+          <FollowersWidget userId={_id} />
+        </div>
+      </div>
+    </Box>
+  );
 };
+
 export default HomePage;
