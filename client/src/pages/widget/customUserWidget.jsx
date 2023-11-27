@@ -60,7 +60,7 @@ const CustomUserWidget = ({ userId, picturePath }) => {
             >
               {userName}
             </Typography>
-            <Typography color={medium}>{followers.length} followers</Typography>
+            <Typography color={medium}>{followers.length} following</Typography>
           </Box>
         </FlexBetween>
         <ManageAccountsOutlined />

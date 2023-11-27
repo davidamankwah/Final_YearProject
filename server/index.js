@@ -8,6 +8,7 @@ import multer from "multer";
 import helmet from "helmet";
 import morgan from "morgan";
 import { createPost } from "./controller/post.js"; // Importing controller functions to create a new post
+import { getRecommendedUsers } from "./controller/user.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import userRoutes from "./routes/user.js";
@@ -49,6 +50,9 @@ const upload = multer({ storage });  // Create a multer middleware instance with
 // ROUTES WITH FILES 
 app.post("/auth/register", upload.single("pic"), register); // Route for creating a new user and handling file upload
 app.post("/posts", checkToken, upload.single("pic"), createPost); // Route for creating a new post, requiring authentication check and handling file upload
+// Server-side route to get a list of recommended users
+app.get("/users/recommended", checkToken, getRecommendedUsers);
+
 
  // ROUTES 
 app.use("/auth", authRoutes);

@@ -61,3 +61,17 @@ export const addOrRemoveFollowers = async (req, res) => {
     res.status(404).json({ message: err.message });
   }
 };
+
+export const getRecommendedUsers = async (req, res) => {
+  try {
+    // Exclude the current user and users the current user is already following
+    const { _id, followers } = req.user;
+    const recommendedUsers = await User.find({
+      _id: { $ne: _id, $nin: followers },
+    }).limit(5); // Limit the number of recommended users
+
+    res.status(200).json(recommendedUsers);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
