@@ -1,4 +1,4 @@
-import {ChatBubbleOutlineOutlined,FavoriteBorderOutlined,FavoriteOutlined,} from "@mui/icons-material";
+import {ChatBubbleOutlineOutlined,FavoriteBorderOutlined,FavoriteOutlined, DeleteOutlined} from "@mui/icons-material";
 import { Box, Divider, IconButton, Typography, useTheme } from "@mui/material";
 import FlexBetween from "../../components/FlexBetween";
 import Follower from "../../components/Follower";
@@ -44,6 +44,28 @@ import { setPost } from "../../state";
       const updatedPost = await response.json();
       dispatch(setPost({ post: updatedPost }));
     };
+
+    // Function to handle post deletion
+  const handleDelete = async () => {
+    // Sending a DELETE request to delete the post
+    const response = await fetch(
+      `http://localhost:4000/posts/${postId}`,
+      {
+        method: "DELETE",
+        headers: {
+          Permitted: `Bearer ${token}`, // Including the bearer token for authentication
+        },
+      }
+    );
+
+    if (response.ok) {
+      // Updating the Redux state to remove the deleted post
+      dispatch(setPost({ post: null }));
+    } else {
+      // Handle error if the delete request fails
+      console.error("Failed to delete post");
+    }
+  };
   
     return (
       <StyledWrapper m="2rem 0">
@@ -106,6 +128,12 @@ import { setPost } from "../../state";
             <Divider />
           </Box>
         )}
+        {/* Delete button */}
+      {loggedInUserId === postUserId && (
+        <IconButton onClick={handleDelete} sx={{ color: "#f44336" }}>
+          <DeleteOutlined />
+        </IconButton>
+      )}
       </StyledWrapper>
     );
   };

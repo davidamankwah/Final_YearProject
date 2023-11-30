@@ -68,7 +68,7 @@ export const getRecommendedUsers = async (req, res) => {
     const { _id, followers } = req.user;
     const recommendedUsers = await User.find({
       _id: { $ne: _id, $nin: followers },
-    }).limit(5); // Limit the number of recommended users
+    }).limit(4); // Limit the number of recommended users
 
     res.status(200).json(recommendedUsers);
   } catch (err) {

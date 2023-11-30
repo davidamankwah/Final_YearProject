@@ -50,7 +50,7 @@ const upload = multer({ storage });  // Create a multer middleware instance with
 // ROUTES WITH FILES 
 app.post("/auth/register", upload.single("pic"), register); // Route for creating a new user and handling file upload
 app.post("/posts", checkToken, upload.single("pic"), createPost); // Route for creating a new post, requiring authentication check and handling file upload
-// Server-side route to get a list of recommended users
+// route to get a list of recommended users
 app.get("/users/recommended", checkToken, getRecommendedUsers);
 
 

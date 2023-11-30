@@ -1,4 +1,6 @@
 import { Box, useMediaQuery } from "@mui/material";
+import LoadingComponent from "./LoadingComponent";
+import NoPostsComponent from "./NoPostsComponent";
 import { useSelector } from "react-redux";
 import Navbar from "../../pages/navbar";
 import CustomUserWidget from "../widget/customUserWidget";
@@ -9,25 +11,37 @@ import "./home.css";
 
 const HomePage = () => {
   const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
-  const { _id, picturePath } = useSelector((state) => state.user);
+  const user = useSelector((state) => state.user);
+  const posts = useSelector((state) => state.posts);
+
+  if (!user) {
+    // Render loading state or redirect to login page
+    return <LoadingComponent />;
+  }
 
   return (
     <Box>
       <Navbar />
       <div className="homePage">
         <div className="homePageSection">
-          <CustomUserWidget userId={_id} picturePath={picturePath} />
+          <CustomUserWidget userId={user._id} picturePath={user.picturePath} />
         </div>
         <div className="homePageSection large">
-          <UserPostWidget picturePath={picturePath} />
-          <PostsWid userId={_id} />
+          <UserPostWidget picturePath={user.picturePath} />
+          {posts.length > 0 ? (
+            <PostsWid userId={user._id} />
+          ) : (
+            <NoPostsComponent />
+          )}
         </div>
         <div className="homePageSection">
-          <FollowersWidget userId={_id} />
+          <FollowersWidget userId={user._id} />
         </div>
       </div>
     </Box>
   );
 };
+
+// You can create LoadingComponent and NoPostsComponent as needed.
 
 export default HomePage;

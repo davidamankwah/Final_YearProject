@@ -34,14 +34,17 @@ export const authSlice = createSlice({
       state.posts = action.payload.posts;
     },
      // Action to update a specific post in the state
-    setPost: (state, action) => {
-      // Mapping through the posts to find and update the specified post
-      const updatedPosts = state.posts.map((post) => {
-        if (post._id === action.payload.post._id) return action.payload.post;
-        return post;
-      });
-      state.posts = updatedPosts; // Updating the posts array with the updated post
-    },
+     setPost: (state, action) => {
+      if (action.payload.post && action.payload.post._id) {
+        const updatedPosts = state.posts.map((post) => {
+          if (post._id === action.payload.post._id) {
+            return action.payload.post;
+          }
+          return post;
+        });
+        state.posts = updatedPosts;
+      }
+    },    
   },
 });
 
