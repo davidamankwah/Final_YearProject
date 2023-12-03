@@ -1,8 +1,9 @@
-import {ChatBubbleOutlineOutlined,FavoriteBorderOutlined,FavoriteOutlined, DeleteOutlined} from "@mui/icons-material";
+import {ChatBubbleOutlineOutlined,FavoriteBorderOutlined,FavoriteOutlined, DeleteOutlined, EditOutlined} from "@mui/icons-material";
 import { Box, Divider, IconButton, Typography, useTheme } from "@mui/material";
 import FlexBetween from "../../components/FlexBetween";
 import Follower from "../../components/Follower";
 import StyledWrapper from "../../components/Wrapper";
+import PostUpdateForm from "../../components/PostUpdateForm";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPost } from "../../state";
@@ -19,6 +20,7 @@ import { setPost } from "../../state";
   }) => {
     // State to manage the display of comments
     const [isComments, setIsComments] = useState(false);
+    const [isUpdating, setIsUpdating] = useState(false);
     const dispatch = useDispatch();
     const token = useSelector((state) => state.token);
     const loggedInUserId = useSelector((state) => state.user._id);
@@ -64,6 +66,38 @@ import { setPost } from "../../state";
     } else {
       // Handle error if the delete request fails
       console.error("Failed to delete post");
+    }
+  };
+
+  const handleUpdateClick = () => {
+    setIsUpdating(true);
+  };
+
+  const handleUpdatePost = async (postId, updatedText) => {
+    try {
+      console.log('Updating post with ID:', postId);
+      console.log('Updated text:', updatedText);
+      // Sending a PATCH request to update post
+      const response = await fetch(`http://localhost:4000/posts/${postId}`, {
+        method: 'PATCH',
+        headers: {
+          Permitted: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ text: updatedText }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update post');
+      }
+
+      // Updating the Redux state with the updated post
+      const updatedPost = await response.json();
+      dispatch(setPost({ post: updatedPost }));
+    } catch (error) {
+      console.error('Error during post update:', error);
+    } finally {
+      setIsUpdating(false);
     }
   };
   
@@ -133,6 +167,18 @@ import { setPost } from "../../state";
         <IconButton onClick={handleDelete} sx={{ color: "#f44336" }}>
           <DeleteOutlined />
         </IconButton>
+      )}
+       {isUpdating ? (
+        <PostUpdateForm postId={postId} initialText={text} onUpdate={handleUpdatePost} />
+      ) : (
+        <>
+          {/* ... existing code ... */}
+          {loggedInUserId === postUserId && (
+            <IconButton variant="outlined" onClick={handleUpdateClick}>
+              <EditOutlined/>
+            </IconButton>
+          )}
+        </>
       )}
       </StyledWrapper>
     );

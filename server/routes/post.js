@@ -2,7 +2,7 @@
 import express from "express";
 
 // Importing controller functions for post-related operations
-import { getFeedPosts, getUserPosts, likePost,  deletePost } from "../controller/post.js";
+import { getFeedPosts, getUserPosts, likePost,  deletePost,updatePost } from "../controller/post.js";
 
 // Importing middleware for checking authentication tokens
 import { checkToken } from "../middleware/auth.js";
@@ -20,6 +20,8 @@ router.get("/:userId/posts", checkToken, getUserPosts);
 router.patch("/:id/like", checkToken, likePost);
 
 router.delete("/:id", checkToken, deletePost); // Add this line for the delete route
+
+router.patch('/:postId', checkToken, updatePost);
 
 // Exporting the router for use in other parts of the application
 export default router;
