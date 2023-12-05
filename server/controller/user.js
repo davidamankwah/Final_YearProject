@@ -75,3 +75,29 @@ export const getRecommendedUsers = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+export const searchUsersByUsername = async (req, res) => {
+  try {
+    const { userName } = req.query;
+
+    if (!userName) {
+      return res.status(400).json({ message: 'Username is required for search' });
+    }
+
+    // Log the username being searched
+    console.log('Searching for username:', userName);
+
+    // Search for users with a matching username
+    const users = await User.find({ userName: { $regex: new RegExp(userName, 'i') } });
+
+    // Log the found users
+    console.log('Found users:', users);
+
+    res.status(200).json(users);
+  } catch (error) {
+    console.error('Error in searchUsersByUsername:', error);
+    res.status(500).json({ message: 'Internal Server Error', error: error.message });
+  }
+};
+
+

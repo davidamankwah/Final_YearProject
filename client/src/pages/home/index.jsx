@@ -2,6 +2,7 @@ import { Box, useMediaQuery } from "@mui/material";
 import LoadingComponent from "./LoadingComponent";
 import NoPostsComponent from "./NoPostsComponent";
 import { useSelector } from "react-redux";
+import React, { useState } from 'react';
 import Navbar from "../../pages/navbar";
 import CustomUserWidget from "../widget/customUserWidget";
 import FollowersWidget from "../widget/FollowersWidget";
