@@ -5,6 +5,7 @@ import Follower from "../../components/Follower";
 import StyledWrapper from "../../components/Wrapper";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import EditsPostForm from "../../components/EditsPostForm";
 import { setPost } from "../../state";
   
   const PostWidget = ({
@@ -66,6 +67,11 @@ import { setPost } from "../../state";
       // Handle error if the delete request fails
       console.error("Failed to delete post");
     }
+  };
+
+   // Function to handle post editing
+   const handleEdit = () => {
+    setIsUpdating(true);
   };
   
     return (
@@ -134,6 +140,22 @@ import { setPost } from "../../state";
         <IconButton onClick={handleDelete} sx={{ color: "#f44336" }}>
           <DeleteOutlined />
         </IconButton>
+      )}
+
+       {/* Edit button */}
+      {loggedInUserId === postUserId && (
+        <IconButton onClick={handleEdit} sx={{ color: "#2196f3" }}>
+          <EditOutlined />
+        </IconButton>
+      )}
+
+      {/* Displaying the EditPostForm if updating is true */}
+      {isUpdating && (
+        <EditsPostForm
+          postId={postId}
+          currentText={text}
+          onCancel={() => setIsUpdating(false)}
+        />
       )}
        
       </StyledWrapper>

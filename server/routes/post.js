@@ -2,10 +2,12 @@
 import express from "express";
 
 // Importing controller functions for post-related operations
-import { getFeedPosts, getUserPosts, likePost,  deletePost } from "../controller/post.js";
+import { getFeedPosts, getUserPosts, likePost,  deletePost, updatePost } from "../controller/post.js";
 
 // Importing middleware for checking authentication tokens
 import { checkToken } from "../middleware/auth.js";
+
+import { verifyToken } from "../middleware/auths.js";
 
 // Creating an Express router
 const router = express.Router();
@@ -21,6 +23,20 @@ router.patch("/:id/like", checkToken, likePost);
 
 router.delete("/:id", checkToken, deletePost); // Add this line for the delete route
 
+router.patch('/:postId', verifyToken, async (req, res) => {
+    const { postId } = req.params;
+    const { text } = req.body;
+    const user = req.user;
+
+    try {
+        // Assuming your updatePost function is asynchronous
+        const updatedPost = await updatePost(user, postId, text);
+        res.status(200).json(updatedPost);
+    } catch (error) {
+        console.error('Error updating post:', error);
+        res.status(500).json({ message: 'Internal Server Error', error: error.message });
+    }
+});
 
 // Exporting the router for use in other parts of the application
 export default router;

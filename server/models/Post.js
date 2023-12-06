@@ -6,7 +6,8 @@ const PostSchema = mongoose.Schema(
   {
      // User ID associated with the post, required field
     userId: {
-      type: String,
+      type:  mongoose.Schema.Types.ObjectId,
+      ref: 'User', // Assuming your user model is named 'User'
       required: true,
     },
     // User name associated with the post, required field

@@ -103,3 +103,34 @@ export const deletePost = async (req, res) => {
   }
 };
 
+// post.js
+
+// ... (other imports and code)
+
+// Controller function to update a post
+export const updatePost = async (user, postId, text) => {
+  try {
+    // Check if the user is the owner of the post
+    const post = await Post.findById(postId).populate('userId').exec(); // Ensure user field is populated
+
+    if (!post) {
+      throw new Error("Post not found");
+    }
+
+    if (post.user && post.user.toString() !== user.id) {
+      throw new Error("You are not allowed to update this post");
+    }
+
+    // Update the post
+    post.text = text;
+    const updatedPost = await post.save();
+
+    return updatedPost;
+  } catch (error) {
+    throw new Error(`Failed to update post: ${error.message}`);
+  }
+};
+
+
+
+
