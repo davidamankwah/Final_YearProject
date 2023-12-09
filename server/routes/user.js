@@ -3,7 +3,7 @@ import {
   getUserById,
   getUserFollowers,
   addOrRemoveFollowers,
-  searchUsersByUsername,
+  searchUsers,
 } from "../controller/user.js"
 import { checkToken } from "../middleware/auth.js";
 
@@ -18,8 +18,8 @@ router.get("/:id/followers", checkToken, getUserFollowers);
 // Add or remove a friend for a user
 router.patch("/:id/:followerId", checkToken, addOrRemoveFollowers);
 
-// Search users by username
-router.get('/search', searchUsersByUsername);
+// Define a route for user search
+router.get("/search", searchUsers);
 
 
 export default router;
