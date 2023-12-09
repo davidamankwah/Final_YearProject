@@ -38,10 +38,25 @@ const Navbar = () => {
     const alt = theme.palette.background.alt;
 
     const fullName = `${user.userName}`;
-
+    
+    const performSearch = (query) => {
+      // Implement your search logic here and return the search result
+      // For now, return a mock result
+      return { userId: "655b95fdb9a6bf304bce628d", userName: "nami" };
+    };
     const handleSearch = () => {
-      // Implement the logic to perform the search, e.g., navigate to search results page
-      console.log("Searching for:", searchQuery);
+      // Implement the logic to perform the search and navigate to the user's profile page
+      if (searchQuery.trim() !== "") {
+        // Assuming searchResult contains the userId of the user you want to navigate to
+        const searchResult = performSearch(searchQuery); // Replace with your actual search logic
+  
+        if (searchResult && searchResult.userId) {
+          navigate(`/profile/${searchResult.userId}`);
+        } else {
+          // Handle case where user was not found
+          console.log("User not found");
+        }
+      }
     };
   
     
