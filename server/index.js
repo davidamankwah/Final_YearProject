@@ -14,6 +14,7 @@ import { fileURLToPath } from "url";
 import userRoutes from "./routes/user.js";
 import authRoutes from "./routes/auth.js";
 import postRoutes from "./routes/post.js"
+import commentRouter from "./routes/comment.js";
 import { checkToken } from "./middleware/auth.js";
 import { register } from "./controller/auth.js";
 
@@ -58,6 +59,8 @@ app.get("/users/recommended", checkToken, getRecommendedUsers);
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
 app.use("/posts", postRoutes);
+app.use('/posts', commentRouter);
+
 
 
 //Mongoose set up

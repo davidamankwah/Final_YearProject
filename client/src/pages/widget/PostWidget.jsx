@@ -19,8 +19,11 @@ import { setPost } from "../../state";
     comments,
   }) => {
     // State to manage the display of comments
+    const [commentText, setCommentText] = useState('');
     const [isComments, setIsComments] = useState(false);
     const [isUpdating, setIsUpdating] = useState(false);
+    // Get the userName from your Redux state or wherever it's stored
+    const names = useSelector((state) => state.user.userName);
     const dispatch = useDispatch();
     const token = useSelector((state) => state.token);
     const loggedInUserId = useSelector((state) => state.user._id);
@@ -74,6 +77,35 @@ import { setPost } from "../../state";
     setIsUpdating(true);
   };
   
+  // Function to handle comment submission
+const handleCommentSubmit = async () => {
+  // Send a POST request to add a comment
+  const response = await fetch(`http://localhost:4000/posts/${postId}/comments`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearep ${token}`, // Fix the typo here, it should be "Bearer" instead of "Bearep"
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ userId: loggedInUserId, userName: names, text: commentText }),
+  });
+
+  if (response.ok) {
+    // Update the Redux state with the updated post
+    const updatedPost = await response.json();
+    dispatch(setPost({ post: updatedPost }));
+
+    // Clear the comment text and close the comment form
+    setCommentText('');
+    setIsComments(false);
+  } else {
+    // Handle error if the comment request fails
+    console.error("Failed to add comment");
+  }
+};
+
+  
+  
+
     return (
       <StyledWrapper m="2rem 0">
         {/* Displaying the user who made the post */}
@@ -121,20 +153,21 @@ import { setPost } from "../../state";
 
           {/* Displaying comments if the comments section is open */}
         </FlexBetween>
-        {isComments && (
-          <Box mt="0.5rem">
-            {comments.map((comment, i) => (
-              <Box key={`${name}-${i}`}>
-                <Divider />
-                 {/* Displaying each comment with a divider */}
-                <Typography sx={{ color: '#ffffff', m: "0.5rem 0", pl: "1rem" }}>
-                  {comment}
-                </Typography>
-              </Box>
-            ))}
-            <Divider />
-          </Box>
-        )}
+                  {isComments && (
+            <Box mt="0.5rem">
+              {comments.map((comment, i) => (
+                <Box key={`${name}-${i}`}>
+                  <Divider />
+                  {/* Displaying each comment with a divider */}
+                  <Typography sx={{ color: '#ffffff', m: "0.5rem 0", pl: "1rem" }}>
+                    {comment.text}
+                  </Typography>
+                </Box>
+              ))}
+              <Divider />
+            </Box>
+          )}
+
         {/* Delete button */}
       {loggedInUserId === postUserId && (
         <IconButton onClick={handleDelete} sx={{ color: "#f44336" }}>
@@ -144,7 +177,7 @@ import { setPost } from "../../state";
 
        {/* Edit button */}
       {loggedInUserId === postUserId && (
-        <IconButton onClick={handleEdit} sx={{ color: "#2196f3" }}>
+        <IconButton onClick={handleEdit} sx={{ color: "blue" }}>
           <EditOutlined />
         </IconButton>
       )}
@@ -156,6 +189,22 @@ import { setPost } from "../../state";
           currentText={text}
           onCancel={() => setIsUpdating(false)}
         />
+      )}
+
+       {/* Button to toggle the comment form */}
+       <IconButton onClick={() => setIsComments(!isComments)}>
+        <ChatBubbleOutlineOutlined />
+      </IconButton>
+      {/* Display the comment form if isCommenting is true */}
+      {isComments && (
+        <Box>
+          <textarea
+            value={commentText}
+            onChange={(e) => setCommentText(e.target.value)}
+            placeholder="Type your comment..."
+          />
+          <button onClick={handleCommentSubmit}>Submit Comment</button>
+        </Box>
       )}
        
       </StyledWrapper>

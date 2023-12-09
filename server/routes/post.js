@@ -9,6 +9,7 @@ import { checkToken } from "../middleware/auth.js";
 
 import { verifyToken } from "../middleware/auths.js";
 
+
 // Creating an Express router
 const router = express.Router();
 
