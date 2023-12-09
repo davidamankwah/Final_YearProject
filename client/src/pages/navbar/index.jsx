@@ -18,11 +18,14 @@ import {
 } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { setLogout } from "../../state";
+
 import { useNavigate } from "react-router-dom";
 import FlexBetween from "../../components/FlexBetween";
 
 const Navbar = () => {
     const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
+
+    const [searchQuery, setSearchQuery] = useState(""); // State to hold the search query
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const user = useSelector((state) => state.user);
@@ -35,6 +38,13 @@ const Navbar = () => {
     const alt = theme.palette.background.alt;
 
     const fullName = `${user.userName}`;
+
+    const handleSearch = () => {
+      // Implement the logic to perform the search, e.g., navigate to search results page
+      console.log("Searching for:", searchQuery);
+    };
+  
+    
     return (
         <FlexBetween padding="1rem 6%" backgroundColor={alt}>
       <FlexBetween gap="1.75rem">
@@ -59,10 +69,16 @@ const Navbar = () => {
             gap="3rem"
             padding="0.1rem 1.5rem"
           >
-            <InputBase placeholder="Search..." />
-            <IconButton>
-              <Search />
-            </IconButton>
+           {/* Search input */}
+          <InputBase
+            placeholder="Search..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          {/* Search button */}
+          <IconButton onClick={handleSearch}>
+            <Search />
+          </IconButton>
           </FlexBetween>
         )}
       </FlexBetween>
