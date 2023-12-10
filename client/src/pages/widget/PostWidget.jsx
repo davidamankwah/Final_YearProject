@@ -83,7 +83,7 @@ const handleCommentSubmit = async () => {
   const response = await fetch(`http://localhost:4000/posts/${postId}/comments`, {
     method: "POST",
     headers: {
-      Authorization: `Bearep ${token}`, // Fix the typo here, it should be "Bearer" instead of "Bearep"
+      Authorization: `Bearep ${token}`, 
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ userId: loggedInUserId, userName: names, text: commentText }),
@@ -102,9 +102,6 @@ const handleCommentSubmit = async () => {
     console.error("Failed to add comment");
   }
 };
-
-  
-  
 
     return (
       <StyledWrapper m="2rem 0">

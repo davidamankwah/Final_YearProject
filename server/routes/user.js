@@ -18,8 +18,8 @@ router.get("/:id/followers", checkToken, getUserFollowers);
 // Add or remove a friend for a user
 router.patch("/:id/:followerId", checkToken, addOrRemoveFollowers);
 
-// Define a route for user search
-router.get("/search", searchUsers);
+router.get("/test/:query", searchUsers);
+
 
 
 export default router;

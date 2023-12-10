@@ -30,7 +30,7 @@ const Navbar = () => {
     const navigate = useNavigate();
     const user = useSelector((state) => state.user);
     const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
-  
+    const token = useSelector((state) => state.token);
     const theme = useTheme();
     const neutralLight = theme.palette.neutral.light;
     const background = theme.palette.background.default;
@@ -41,7 +41,7 @@ const Navbar = () => {
     
     const performSearch = async (query) => {
       try {
-        const response = await fetch(`http://localhost:4000/search?query=${query}`, {
+        const response = await fetch(`http://localhost:4000/test/${query}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -50,33 +50,35 @@ const Navbar = () => {
     
         if (response.ok) {
           const searchResult = await response.json();
+          console.log("Search Result:", searchResult);
           return searchResult;
         } else {
           console.error("Search request failed");
-          return null;
+          return [];
         }
       } catch (error) {
         console.error("Error during search:", error);
-        return null;
+        return [];
       }
     };
     
-    const handleSearch = () => {
-      // Implement the logic to perform the search and navigate to the user's profile page
+    
+    const handleSearch = async () => {
       if (searchQuery.trim() !== "") {
-        // Assuming searchResult contains the userId of the user you want to navigate to
-        const searchResult = performSearch(searchQuery); // Replace with your actual search logic
-  
-        if (searchResult && searchResult.userId) {
-          navigate(`/profile/${searchResult.userId}`);
+        const searchResult = await performSearch(searchQuery);
+    
+        if (searchResult && searchResult._id) {
+          // Assuming searchResult is a single user object
+          navigate(`/profile/${searchResult._id}`);
         } else {
-          // Handle case where user was not found
           console.log("User not found");
         }
       }
     };
-  
     
+    
+    
+      
     return (
         <FlexBetween padding="1rem 6%" backgroundColor={alt}>
       <FlexBetween gap="1.75rem">
