@@ -190,11 +190,6 @@ const handleCommentSubmit = async () => {
           onCancel={() => setIsUpdating(false)}
         />
       )}
-
-       {/* Button to toggle the comment form */}
-       <IconButton onClick={() => setIsComments(!isComments)}>
-        <ChatBubbleOutlineOutlined />
-      </IconButton>
       {/* Display the comment form if isCommenting is true */}
       {isComments && (
         <Box>

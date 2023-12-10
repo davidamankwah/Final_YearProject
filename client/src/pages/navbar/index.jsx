@@ -39,11 +39,28 @@ const Navbar = () => {
 
     const fullName = `${user.userName}`;
     
-    const performSearch = (query) => {
-      // Implement your search logic here and return the search result
-      // For now, return a mock result
-      return { userId: "655b95fdb9a6bf304bce628d", userName: "nami" };
+    const performSearch = async (query) => {
+      try {
+        const response = await fetch(`http://localhost:4000/search?query=${query}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+    
+        if (response.ok) {
+          const searchResult = await response.json();
+          return searchResult;
+        } else {
+          console.error("Search request failed");
+          return null;
+        }
+      } catch (error) {
+        console.error("Error during search:", error);
+        return null;
+      }
     };
+    
     const handleSearch = () => {
       // Implement the logic to perform the search and navigate to the user's profile page
       if (searchQuery.trim() !== "") {
