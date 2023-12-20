@@ -13,7 +13,9 @@ import path from "path";
 import { fileURLToPath } from "url";
 import userRoutes from "./routes/user.js";
 import authRoutes from "./routes/auth.js";
-import postRoutes from "./routes/post.js"
+import postRoutes from "./routes/post.js";
+import chatRoutes from "./routes/chat.js";
+import messageRoutes from "./routes/message.js";
 import commentRouter from "./routes/comment.js";
 import { checkToken } from "./middleware/auth.js";
 import { register } from "./controller/auth.js";
@@ -60,6 +62,9 @@ app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
 app.use("/posts", postRoutes);
 app.use('/posts', commentRouter);
+app.use('/chat', chatRoutes);
+app.use('/message', messageRoutes);
+
 
 
 
