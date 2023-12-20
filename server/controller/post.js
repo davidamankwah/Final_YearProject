@@ -105,8 +105,6 @@ export const deletePost = async (req, res) => {
 
 // post.js
 
-// ... (other imports and code)
-
 // Controller function to update a post
 export const updatePost = async (user, postId, text) => {
   try {

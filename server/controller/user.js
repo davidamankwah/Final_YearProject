@@ -77,7 +77,6 @@ export const getRecommendedUsers = async (req, res) => {
 };
 
 // Controller function for user search
-// controller/user.js
 export const searchUsers = async (req, res) => {
   try {
     // Get the search query from the request parameters
