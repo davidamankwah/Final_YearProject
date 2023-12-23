@@ -20,7 +20,9 @@ const Chat = () => {
         console.log(error);
       }
     };
-    getChats();
+    if (loggedInUserId._id) {
+      getChats();
+    }
   }, [loggedInUserId._id]);
 
     return (

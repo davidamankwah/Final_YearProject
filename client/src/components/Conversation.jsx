@@ -11,7 +11,7 @@ const Conversation = ({ data, currentUser})  => {
     const userId = useSelector((state) => state.user);
 
     useEffect(()=> {
-      
+        const userId = data.members.find((id)=>id!==currentUser)
         console.log(userId)
         const  getUserData = async () => {
             try
@@ -23,6 +23,7 @@ const Conversation = ({ data, currentUser})  => {
               console.log(response); // Log the response
               const data = await response.json();
               setUserData(data);
+              dispatch({type:"SAVE_USER", data:data}) //modify
           }
           catch(error)
           {
@@ -30,7 +31,7 @@ const Conversation = ({ data, currentUser})  => {
           }
         }
         getUserData();
-    }, [])
+    }, [userId])
 
     return (
         <>
