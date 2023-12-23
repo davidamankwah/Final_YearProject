@@ -18,7 +18,7 @@ import {
 } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { setLogout } from "../../state";
-
+import { Link } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 import FlexBetween from "../../components/FlexBetween";
 
@@ -117,6 +117,9 @@ const Navbar = () => {
       {/* DESKTOP NAV */}
       {isNonMobileScreens ? (
         <FlexBetween gap="2rem">
+          <Link to="/chat" style={{ textDecoration: 'none', color: 'inherit' }}>
+          <Message sx={{ fontSize: "25px" }} />
+          </Link>
           <FormControl variant="standard" value={fullName}>
             <Select
               value={fullName}
@@ -179,6 +182,9 @@ const Navbar = () => {
             alignItems="center"
             gap="3rem"
           >
+             <Link to="/chat" style={{ textDecoration: 'none', color: 'inherit' }}>
+            <Message sx={{ fontSize: "25px" }} />
+            </Link>2
             <FormControl variant="standard" value={fullName}>
               <Select
                 value={fullName}

@@ -3,6 +3,9 @@ import express from "express";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import cors from "cors";
+import http from "http";
+import { Server } from "socket.io";
+import Chat from "./models/Chat.js";
 import dotenv from "dotenv";
 import multer from "multer";
 import helmet from "helmet";
@@ -15,7 +18,7 @@ import userRoutes from "./routes/user.js";
 import authRoutes from "./routes/auth.js";
 import postRoutes from "./routes/post.js";
 import chatRoutes from "./routes/chat.js";
-import messageRoutes from "./routes/message.js";
+//import messageRoutes from "./routes/message.js";
 import commentRouter from "./routes/comment.js";
 import { checkToken } from "./middleware/auth.js";
 import { register } from "./controller/auth.js";
@@ -28,6 +31,17 @@ dotenv.config();
 
 // Create Express app
 const app = express();
+
+// Create an HTTP server
+const server = http.createServer(app);
+
+// Create a Socket.IO server instance attached to the HTTP server
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:3000", // Replace with your frontend URL
+    methods: ["GET", "POST"],
+  },
+});
 
 app.use(express.json());
 app.use(helmet());
@@ -63,10 +77,40 @@ app.use("/users", userRoutes);
 app.use("/posts", postRoutes);
 app.use('/posts', commentRouter);
 app.use('/chat', chatRoutes);
-app.use('/message', messageRoutes);
+//app.use('/message', messageRoutes);
 
+// WebSocket handling
+io.on("connection", (socket) => {
+  console.log("User connected:", socket.id);
 
+  // Handle messages
+  socket.on("sendMessage", async (data) => {
+    const { chatId, senderId, script } = data;
 
+    try {
+      const chat = await Chat.findById(chatId);
+
+      if (chat) {
+        chat.messages.push({ senderId, script });
+        await chat.save();
+
+        io.to(chatId).emit("receiveMessage", { chatId, senderId, script });
+      }
+    } catch (error) {
+      console.error("Error saving message:", error);
+    }
+  });
+
+  // Join a chat room
+  socket.on("joinChat", (chatId) => {
+    socket.join(chatId);
+  });
+
+  // Handle disconnect
+  socket.on("disconnect", () => {
+    console.log("User disconnected:", socket.id);
+  });
+});
 
 //Mongoose set up
 const PORT = process.env.PORT || 4001; // Set port to 4000 
