@@ -26,6 +26,7 @@ const Navbar = () => {
     const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
 
     const [searchQuery, setSearchQuery] = useState(""); // State to hold the search query
+    const [searchResult, setSearchResult] = useState([]);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const user = useSelector((state) => state.user);
@@ -38,44 +39,21 @@ const Navbar = () => {
     const alt = theme.palette.background.alt;
 
     const fullName = `${user.userName}`;
-    
-    const performSearch = async (query) => {
+    const handleSearch = async () => {
       try {
-        const response = await fetch(`http://localhost:4000/test/${query}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+        const response = await fetch(`http://localhost:4000/user/search/${searchQuery}`);
+        console.log('Search Response:', response);
     
         if (response.ok) {
-          const searchResult = await response.json();
-          console.log("Search Result:", searchResult);
-          return searchResult;
+          const result = await response.json();
+          setSearchResult(result);
         } else {
-          console.error("Search request failed");
-          return [];
+          console.error('Search request failed:', response.status, response.statusText);
         }
       } catch (error) {
-        console.error("Error during search:", error);
-        return [];
+        console.error('Error during search:', error);
       }
-    };
-    
-    
-    const handleSearch = async () => {
-      if (searchQuery.trim() !== "") {
-        const searchResult = await performSearch(searchQuery);
-    
-        if (searchResult && searchResult._id) {
-          // Assuming searchResult is a single user object
-          navigate(`/profile/${searchResult._id}`);
-        } else {
-          console.log("User not found");
-        }
-      }
-    };
-    
+    };      
     return (
         <FlexBetween padding="1rem 6%" backgroundColor={alt}>
       <FlexBetween gap="1.75rem">
@@ -101,15 +79,20 @@ const Navbar = () => {
             padding="0.1rem 1.5rem"
           >
            {/* Search input */}
-          <InputBase
-            placeholder="Search..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-          {/* Search button */}
-          <IconButton onClick={handleSearch}>
-            <Search />
-          </IconButton>
+           <InputBase
+        placeholder="Search users..."
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+      />
+      <IconButton onClick={handleSearch}>
+        <Search />
+      </IconButton>
+      <Typography>Search Results:</Typography>
+      <ul>
+        {searchResult.map((user) => (
+          <li key={user._id}>{user.userName}</li>
+        ))}
+      </ul>
           </FlexBetween>
         )}
       </FlexBetween>

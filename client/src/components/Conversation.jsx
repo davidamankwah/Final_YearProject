@@ -1,51 +1,55 @@
-import React, { useState } from "react";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import ProfileImage from "./ProfileImage";
+// components/Conversation.jsx
+import React, { useState, useEffect } from 'react';
+import io from 'socket.io-client';
 
+const Conversation = ({ selectedUser, onSendMessage }) => {
+  const [message, setMessage] = useState('');
+  const [messages, setMessages] = useState([]);
+  const socket = io('http://localhost:4000'); // your server URL
 
-const Conversation = ({ data, currentUser})  => {
-    const [userData, setUserData] = useState(null)
-    const token = useSelector((state) => state.token);
-    const dispatch = useDispatch();
-    const userId = useSelector((state) => state.user);
+  useEffect(() => {
+    // Connect to the room or conversation with the selected user
+    socket.emit('joinRoom', selectedUser._id);
+    
 
-    useEffect(()=> {
-        const userId = data.members.find((id)=>id!==currentUser)
-        console.log(userId)
-        const  getUserData = async () => {
-            try
-            {
-            const response = await fetch(`http://localhost:4000/users/${userId}`, {
-                method: "GET",
-                headers: { Permitted: `Bearer ${token}` },
-              });
-              console.log(response); // Log the response
-              const data = await response.json();
-              setUserData(data);
-              dispatch({type:"SAVE_USER", data:data}) //modify
-          }
-          catch(error)
-          {
-            console.log(error)
-          }
-        }
-        getUserData();
-    }, [userId])
+    // Listen for incoming messages
+    socket.on('chat message', (data) => {
+      setMessages([...messages, { text: data.message, sender: 'other' }]);
+    });
 
-    return (
-        <>
-        <div className="follower conversation">
-          <div>
-          <ProfileImage image={userData.profilePicture} />
-            <div className="name" style={{fontSize: '0.8rem'}}>
-            <span>{userData.userName}</span>
-            </div>
+    // Clean up the socket connection on component unmount
+    return () => {
+      socket.disconnect();
+    };
+  }, [selectedUser]);
+
+  const handleSendMessage = () => {
+    // Send the message to the server and update the UI
+    socket.emit('chat message', { message, sender: 'self', receiver: selectedUser._id });
+    setMessages([...messages, { text: message, sender: 'self' }]);
+    setMessage('');
+  };
+
+  return (
+    <div>
+      <h2>Chat with {selectedUser.userName}</h2>
+      <div className="chat-messages">
+        {messages.map((msg, index) => (
+          <div key={index} className={msg.sender === 'self' ? 'self' : 'other'}>
+            {msg.text}
           </div>
-        </div>
-        <hr style={{ width: "85%", border: "0.1px solid #ececec" }} />
-      </>
-    )
-}
+        ))}
+      </div>
+      <div className="chat-input">
+        <input
+          type="text"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+        />
+        <button onClick={handleSendMessage}>Send</button>
+      </div>
+    </div>
+  );
+};
 
 export default Conversation;

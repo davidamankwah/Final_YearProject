@@ -77,6 +77,11 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     console.log('User disconnected');
   });
+
+  // Handle chat messages
+  socket.on('chat message', (data) => {
+    io.emit('chat message', data); // Broadcast the message to all connected clients
+  });
 });
 
 

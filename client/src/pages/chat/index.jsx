@@ -1,62 +1,35 @@
+// Chat component
 import React from 'react';
-import "./chat.css";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { userChats } from '../../api/ChatRequests';
-import Conversation from '../../components/Conversation';
+import { Box, useMediaQuery } from "@mui/material";
+import { useSelector } from 'react-redux'; // Import useSelector
+import Navbar from "../../pages/navbar";
+import CustomUserWidget from "../widget/customUserWidget";
+import FollowersWidget from '../widget/FollowersWidget';
+import ChatPage from './chatpage'; // Import the ChatPage component
 
 const Chat = () => {
-    const [chats, setChats] = useState([]);
-    const loggedInUserId = useSelector((state) => state.user._id);
-    console.log(loggedInUserId)
+  const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
+  const user = useSelector((state) => state.user);
+  const posts = useSelector((state) => state.posts);
+  const followers = useSelector((state) => state.user.followers); // Retrieve followers from the Redux store
 
-     // Get the chat in chat section
-  useEffect(() => {
-    const getChats = async () => {
-      try {
-        const { data } = await userChats(loggedInUserId._id);
-        setChats(data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    if (loggedInUserId._id) {
-      getChats();
-    }
-  }, [loggedInUserId._id]);
-
-    return (
-        <div className="Chat">
-      {/* Left Side */}
-      <div className="Left-side-chat">
-        <div className="Chat-container">
-          <h2>Chats</h2>
-          <div className="Chat-list">
-          {chats.map((chat) => (
-              <div
-               
-              >
-                <Conversation
-                  data={chat}
-                  currentUser={loggedInUserId._id}
-                />
-              </div>
-            ))}
-              </div>
-           
-          </div>
+  return (
+    <Box>
+      <Navbar />
+      <div>
+        <div>
+          <CustomUserWidget userId={user._id} picturePath={user.picturePath} />
         </div>
-
-        {/* Right Side */}
-
-      <div className="Right-side-chat">
-        <div style={{ width: "20rem", alignSelf: "flex-end" }}>
+        <div>
+          <FollowersWidget userId={user._id} />
+        </div>
+        {/* Pass the followers data to ChatPage */}
+        <div>
+          <ChatPage followers={followers} />
         </div>
       </div>
-      </div>
-
-      
-    ) 
-}
+    </Box>
+  );
+};
 
 export default Chat;
