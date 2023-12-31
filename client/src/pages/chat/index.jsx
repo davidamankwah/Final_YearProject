@@ -1,34 +1,72 @@
 // Chat component
-import React from 'react';
-import { Box, useMediaQuery } from "@mui/material";
-import { useSelector } from 'react-redux'; // Import useSelector
-import Navbar from "../../pages/navbar";
-import CustomUserWidget from "../widget/customUserWidget";
-import FollowersWidget from '../widget/FollowersWidget';
-import ChatPage from './chatpage'; // Import the ChatPage component
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 const Chat = () => {
-  const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
-  const user = useSelector((state) => state.user);
-  const posts = useSelector((state) => state.posts);
-  const followers = useSelector((state) => state.user.followers); // Retrieve followers from the Redux store
+  const dispatch = useDispatch();
+  const userId = useSelector((state) => state.user._id);
+  const followers = useSelector((state) => state.followers); // Assuming you store followers in the Redux state
+  const [selectedFollower, setSelectedFollower] = useState(null);
+  const [messages, setMessages] = useState([]);
+
+  useEffect(() => {
+    // Fetch followers when the component mounts
+    fetchFollowers(userId);
+  }, [userId]);
+
+  const fetchFollowers = async (userId) => {
+    try {
+      const response = await fetch(`http://localhost:4000/messages/followers/${userId}`, {
+        headers: {
+          Authorization: `Bearep ${token}`, // Add your authentication token
+        },
+      });
+      const data = await response.json();
+      dispatch({ type: 'SET_FOLLOWERS', payload: data });
+    } catch (error) {
+      console.error('Error fetching followers', error);
+    }
+  };
+
+  const fetchMessages = async (userId, followerId) => {
+    try {
+      const response = await fetch(`http://localhost:4000/messages/${userId}?followerId=${followerId}`, {
+        headers: {
+          Authorization: `Bearer ${YOUR_AUTH_TOKEN}`, // Add your authentication token
+        },
+      });
+      const data = await response.json();
+      setMessages(data);
+    } catch (error) {
+      console.error('Error fetching messages', error);
+    }
+  };
+
+  const handleFollowerClick = (followerId) => {
+    // Fetch messages for the selected follower
+    fetchMessages(userId, followerId);
+    setSelectedFollower(followerId);
+  };
 
   return (
-    <Box>
-      <Navbar />
+    <div>
       <div>
-        <div>
-          <CustomUserWidget userId={user._id} picturePath={user.picturePath} />
-        </div>
-        <div>
-          <FollowersWidget userId={user._id} />
-        </div>
-        {/* Pass the followers data to ChatPage */}
-        <div>
-          <ChatPage followers={followers} />
-        </div>
+        <h2>Followers</h2>
+        <ul>
+          {followers.map((follower) => (
+            <li key={follower._id} onClick={() => handleFollowerClick(follower._id)}>
+              {follower.userName}
+            </li>
+          ))}
+        </ul>
       </div>
-    </Box>
+      <div>
+        <h2>Chat</h2>
+        {selectedFollower && (
+          <Message messages={messages} />
+        )}
+      </div>
+    </div>
   );
 };
 

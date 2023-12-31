@@ -37,6 +37,11 @@ const PostSchema = mongoose.Schema(
       type: Map,
       of: Boolean,
     },
+    dislikes: {
+      type: Map,
+      of: Boolean,
+    },
+  
     comments: [CommentSchema], // Embed CommentSchema for handling comments
   },
   { timestamps: true }

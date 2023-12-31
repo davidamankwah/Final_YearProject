@@ -5,6 +5,8 @@ const initialState = {
   user: null,
   token: null,
   posts: [],
+  messages: [],
+  dislikes: {}, // Add this line
 };
 // Creating the authSlice using createSlice
 export const authSlice = createSlice({
@@ -44,7 +46,7 @@ export const authSlice = createSlice({
         });
         state.posts = updatedPosts;
       }
-    },    
+    },   
   },
 });
 

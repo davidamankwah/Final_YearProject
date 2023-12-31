@@ -2,7 +2,7 @@
 import express from "express";
 
 // Importing controller functions for post-related operations
-import { getFeedPosts, getUserPosts, likePost,  deletePost, updatePost } from "../controller/post.js";
+import { getFeedPosts, getUserPosts, likePost, dislikePost ,deletePost, updatePost } from "../controller/post.js";
 
 // Importing middleware for checking authentication tokens
 import { checkToken } from "../middleware/auth.js";
@@ -21,6 +21,9 @@ router.get("/:userId/posts", checkToken, getUserPosts);
 
 // Route to like or unlike a post, requiring authentication check
 router.patch("/:id/like", checkToken, likePost);
+
+// Route to dislike or undislike a post, requiring authentication check
+router.patch("/:id/dislike", checkToken, dislikePost);
 
 router.delete("/:id", checkToken, deletePost); // Add this line for the delete route
 

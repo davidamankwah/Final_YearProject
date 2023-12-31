@@ -1,11 +1,14 @@
 // routes/message.js
 import express from 'express';
 import { getMessages, createMessage } from '../controller/message.js'; // Updated import path
-import { checkToken } from '../middleware/auth.js'; // Updated import path
+import { verifyToken } from '../middleware/auths.js';
 
 const router = express.Router();
 
-router.get('/:userId/:receiverId', checkToken, getMessages);
-router.post('/:userId/:receiverId', checkToken, createMessage);
+// Endpoint to get messages for a specific user
+router.get('/inbox/:userId',verifyToken ,getMessages);
+
+// Endpoint to send a message
+router.post('/send', verifyToken,createMessage);
 
 export default router;

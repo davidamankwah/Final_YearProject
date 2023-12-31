@@ -14,9 +14,7 @@ import { fileURLToPath } from "url";
 import userRoutes from "./routes/user.js";
 import authRoutes from "./routes/auth.js";
 import postRoutes from "./routes/post.js";
-//import chatRoutes from "./routes/chat.js";
-import http from 'http'; // Import the HTTP module
-import { Server } from 'socket.io'; // Import Socket.IO
+
 import messageRoutes from './routes/message.js';
 import commentRouter from "./routes/comment.js";
 import { checkToken } from "./middleware/auth.js";
@@ -30,8 +28,6 @@ dotenv.config();
 
 // Create Express app
 const app = express();
-const server = http.createServer(app); // Create an HTTP server and pass the Express app to it
-const io = new Server(server); // Create a Socket.IO server and pass the HTTP server to it
 
 app.use(express.json());
 app.use(helmet());
@@ -66,24 +62,7 @@ app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
 app.use("/posts", postRoutes);
 app.use('/posts', commentRouter);
-//app.use('/chat', chatRoutes);
 app.use('/messages', messageRoutes);
-
-// Socket.IO connection handling
-io.on('connection', (socket) => {
-  console.log('A user connected');
-
-  // Handle disconnection
-  socket.on('disconnect', () => {
-    console.log('User disconnected');
-  });
-
-  // Handle chat messages
-  socket.on('chat message', (data) => {
-    io.emit('chat message', data); // Broadcast the message to all connected clients
-  });
-});
-
 
 //Mongoose set up
 const PORT = process.env.PORT || 4001; // Set port to 4000 

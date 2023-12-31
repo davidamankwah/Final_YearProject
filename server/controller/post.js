@@ -87,6 +87,40 @@ export const likePost = async (req, res) => {
   }
 };
 
+// Controller function to dislike or undislike a post
+export const dislikePost = async (req, res) => {
+  try {
+    // Extracting post ID from the request parameters
+    const { id } = req.params;
+    // Extracting user ID from the request body
+    const { userId } = req.body;
+    // Retrieving the post based on the provided post ID
+    const post = await Post.findById(id);
+
+    // Checking if the user has already disliked the post
+    const isDisliked = post.dislikes.get(userId);
+
+    if (isDisliked) {
+      post.dislikes.delete(userId); // If disliked, remove the dislike
+    } else {
+      post.dislikes.set(userId, true); // If not disliked, add the dislike
+    }
+
+    // Updating the post with the modified dislikes
+    const updatedPost = await Post.findByIdAndUpdate(
+      id,
+      { dislikes: post.dislikes },
+      { new: true }
+    );
+
+    // Responding with the updated post
+    res.status(200).json(updatedPost);
+  } catch (err) {
+    res.status(404).json({ message: err.message });
+  }
+};
+
+
 // Controller function to delete a post
 export const deletePost = async (req, res) => {
   try {

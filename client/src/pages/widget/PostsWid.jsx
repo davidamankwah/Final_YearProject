@@ -53,6 +53,7 @@ const PostsWid = ({ userId, isProfile = false }) => {
           picturePath,
           profileImage,
           likes,
+          dislikes,
           comments,
         }) => (
           <PostWidget
@@ -64,6 +65,7 @@ const PostsWid = ({ userId, isProfile = false }) => {
             picturePath={picturePath}
             profileImage={profileImage}
             likes={likes}
+            dislikes={dislikes}
             comments={comments}
           />
         )
