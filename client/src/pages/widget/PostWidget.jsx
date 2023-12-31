@@ -69,18 +69,31 @@ import { setPost } from "../../state";
 
     // Function to handle disliking or undisliking a post
   const patchDislike = async () => {
-  // Sending a PATCH request to update dislike status
-  const response = await fetch(`http://localhost:4000/posts/${postId}/dislike`, {
-    method: "PATCH",
-    headers: {
-      Permitted: `Bearer ${token}`, // Including the bearer token for authentication
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ userId: loggedInUserId }),
-  });
-  // Updating the Redux state with the updated post
-  const updatedPost = await response.json();
-  dispatch(setPost({ post: updatedPost }));
+    try {
+       // Log the postId before making the request
+      console.log('Disliking post with postId:', postId);
+      const response = await fetch(`http://localhost:4000/posts/${postId}/dislike`, {
+        method: "PATCH",
+        headers: {
+          Permitted: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId: loggedInUserId }),
+      });
+  
+      if (response.ok) {
+        const updatedPost = await response.json();
+        dispatch(setPost({ post: updatedPost }));
+      } else {
+        if (response.status === 404) {
+          console.error("Post not found:", postId);
+        } else {
+          console.error("Failed to patch dislike. Server response:", response.statusText);
+        }
+      }
+    } catch (error) {
+      console.error("Error in patchDislike:", error);
+    }
 };
 
 

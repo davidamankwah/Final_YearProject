@@ -6,7 +6,7 @@ const initialState = {
   token: null,
   posts: [],
   messages: [],
-  dislikes: {}, // Add this line
+ // dislikes: {}, // Add this line
 };
 // Creating the authSlice using createSlice
 export const authSlice = createSlice({

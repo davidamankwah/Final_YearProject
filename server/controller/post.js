@@ -19,6 +19,7 @@ export const createPost = async (req, res) => {
       profileImage: user.profileImage,
       picturePath,
       likes: {}, // Initializing likes as an empty map
+      dislikes: {}, 
       comments: [],// Initializing comments as an empty array
     });
     // Saving the new post to the database
@@ -90,10 +91,11 @@ export const likePost = async (req, res) => {
 // Controller function to dislike or undislike a post
 export const dislikePost = async (req, res) => {
   try {
-    // Extracting post ID from the request parameters
     const { id } = req.params;
-    // Extracting user ID from the request body
+    
+
     const { userId } = req.body;
+
     // Retrieving the post based on the provided post ID
     const post = await Post.findById(id);
 
@@ -105,6 +107,9 @@ export const dislikePost = async (req, res) => {
     } else {
       post.dislikes.set(userId, true); // If not disliked, add the dislike
     }
+
+    // Before modification
+console.log('Before modification:', post);
 
     // Updating the post with the modified dislikes
     const updatedPost = await Post.findByIdAndUpdate(
