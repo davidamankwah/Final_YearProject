@@ -14,7 +14,7 @@ import { fileURLToPath } from "url";
 import userRoutes from "./routes/user.js";
 import authRoutes from "./routes/auth.js";
 import postRoutes from "./routes/post.js";
-
+import chatRoutes from './routes/chat.js';
 import messageRoutes from './routes/message.js';
 import commentRouter from "./routes/comment.js";
 import { checkToken } from "./middleware/auth.js";
@@ -63,6 +63,7 @@ app.use("/users", userRoutes);
 app.use("/posts", postRoutes);
 app.use('/posts', commentRouter);
 app.use('/messages', messageRoutes);
+app.use('/chat', chatRoutes);
 
 //Mongoose set up
 const PORT = process.env.PORT || 4001; // Set port to 4000 
