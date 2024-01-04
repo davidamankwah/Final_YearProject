@@ -41,9 +41,8 @@ const Navbar = () => {
     const fullName = `${user.userName}`;
     const handleSearch = async () => {
       try {
-        const response = await fetch(`http://localhost:4000/user/search/${searchQuery}`);
-        console.log('Search Response:', response);
-    
+        const response = await fetch(`http://localhost:4000/users/search/${searchQuery}`);
+  
         if (response.ok) {
           const result = await response.json();
           setSearchResult(result);
@@ -54,6 +53,11 @@ const Navbar = () => {
         console.error('Error during search:', error);
       }
     };      
+
+    const handleProfileClick = (userId) => {
+      // Navigate to the user's profile page
+      navigate(`/profile/${userId}`);
+    };
     return (
         <FlexBetween padding="1rem 6%" backgroundColor={alt}>
       <FlexBetween gap="1.75rem">
@@ -89,10 +93,12 @@ const Navbar = () => {
       </IconButton>
       <Typography>Search Results:</Typography>
       <ul>
-        {searchResult.map((user) => (
-          <li key={user._id}>{user.userName}</li>
-        ))}
-      </ul>
+          {searchResult.map((user) => (
+            <li key={user._id} onClick={() => handleProfileClick(user._id)}>
+              {user.userName}
+            </li>
+          ))}
+        </ul>
           </FlexBetween>
         )}
       </FlexBetween>
