@@ -23,7 +23,11 @@ const RecommendedUsers = ({ token }) => {
         const data = await response.json();
         // Filter out the current user from the recommended users
         const filteredUsers = data.filter(user => user._id !== currentUserID);
-        setRecommendedUsers(filteredUsers);
+        // Shuffle the array randomly
+        const shuffledUsers = shuffleArray(filteredUsers);
+        // Set the state with the shuffled array
+        setRecommendedUsers(shuffledUsers);
+
       } catch (error) {
         console.error(error);
       }
@@ -31,6 +35,16 @@ const RecommendedUsers = ({ token }) => {
 
     fetchRecommendedUsers();
   }, [token, currentUserID]);
+
+    // Function to shuffle an array randomly
+    const shuffleArray = (array) => {
+      const shuffledArray = [...array];
+      for (let i = shuffledArray.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+      }
+      return shuffledArray;
+    };
 
   return (
     <div className="recommended-users">
