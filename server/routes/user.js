@@ -3,7 +3,6 @@ import {
   getUserById,
   getUserFollowers,
   addOrRemoveFollowers,
-  searchUsers,
 } from "../controller/user.js"
 import { checkToken } from "../middleware/auth.js";
 import User from '../models/User.js'; // Import the User model
