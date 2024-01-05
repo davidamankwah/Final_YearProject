@@ -16,6 +16,7 @@ const Conversation = ({ data, currentUser}) => {
       {
           const {data} =await getUser(userId)
          setUserData(data)
+         console.log(data)
          dispatch({type:"SAVE_USER", data:data})
       }
       catch(error)
