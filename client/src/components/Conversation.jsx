@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch } from "react-redux";
 import { getUser } from '../api/UserRequests';
 
-const Conversation = ({ data, currentUser}) => {
+const Conversation = ({ data, currentUser, online }) => {
   const [userData, setUserData] = useState(null)
   const dispatch = useDispatch()
 
@@ -30,6 +30,17 @@ const Conversation = ({ data, currentUser}) => {
 
   return (
     <>
+   <div className="follower conversation">
+        <div>
+          {online && <div className="online-dot"></div>}
+         
+          <div className="name" style={{fontSize: '0.8rem'}}>
+            <span>{userData?.userName}</span>
+            <span style={{color: online?"#51e200":""}}>{online? "Online" : "Offline"}</span>
+          </div>
+        </div>
+      </div>
+      <hr style={{ width: "85%", border: "0.1px solid #ececec" }} />
     </>
   );
 };

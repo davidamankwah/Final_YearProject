@@ -1,48 +1,91 @@
-// Chat component
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { userChats } from '../../api/ChatRequests';
+import { setChats, setMessages } from '../../state';
+import { useParams } from "react-router-dom";
 import "./chat.css";
-import Conversation from '../../components/Conversation';
 
 const Chat = () => {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user._id);
-  const [chats, setChats] = useState([]);
-  const [messages, setMessages] = useState([]);
+  const [selectedChat, setSelectedChat] = useState(null);
+  const chats = useSelector((state) => state.chats);
+  const { userId } = useParams(); 
+  useEffect(() => {
+    const fetchChats = async () => {
+      try {
+        const response = await fetch(`http://localhost:4000/chat/${userId}`, {
+          method: "GET",
+        });
 
- // Get the chat in chat section
- useEffect(() => {
-  const getChats = async () => {
+        if (!response.ok) {
+          throw new Error("Failed to fetch chats");
+        }
+
+        const data = await response.json();
+        dispatch(setChats({ chats: data }));
+      } catch (error) {
+        console.error("Error fetching chats:", error.message);
+      }
+    };
+
+    fetchChats();
+  }, [dispatch]);
+
+  const fetchMessages = async (chatId) => {
     try {
-      const { data } = await userChats(user._id);
-      setChats(data);
+      const response = await fetch(`http://localhost:4000/messages/${chatId}`, {
+        method: "GET",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch messages");
+      }
+
+      const data = await response.json();
+
+      // Dispatch an action to update the state with the fetched messages
+      dispatch(setMessages({ chatId, messages: data }));
     } catch (error) {
-      console.log(error);
+      console.error("Error fetching messages:", error.message);
     }
   };
-  getChats();
-}, [user._id]);
+
+  const handleChatSelect = (chatId) => {
+    setSelectedChat(chatId);
+    fetchMessages(chatId);
+  };
 
   return (
     <div className="Chat">
-    {/* Left Side */}
-    <div className="Left-side-chat">
-   
+      {/* Left Side */}
+      <section className="Left-side-chat">
         <div className="Chat-container">
           <h2>Chats</h2>
           <div className="Chat-list">
-
+            {chats.map(chat => (
+              <div
+                key={chat.id}
+                className={`Chat-item ${selectedChat === chat.id ? 'selected' : ''}`}
+                onClick={() => handleChatSelect(chat.id)}
+              >
+                {chat.members} {/* Display chat name or other relevant information */}
+              </div>
+            ))}
           </div>
         </div>
-      </div>
+      </section>
 
-        {/* Right Side */}
-        <div className="Right-side-chat">
+      {/* Right Side */}
+      <aside className="Right-side-chat">
         <div style={{ width: "20rem", alignSelf: "flex-end" }}>
+          {/* Render messages for the selected chat */}
+          {selectedChat && (
+            <div className="Chat-messages">
+              {/* Display messages for the selected chat */}
+              {/* Add a component to render messages, e.g., <Messages chatId={selectedChat} /> */}
+            </div>
+          )}
         </div>
-      </div>
-
+      </aside>
     </div>
   );
 };

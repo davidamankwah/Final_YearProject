@@ -1,29 +1,37 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+// Initial state for the chats slice of the Redux store
 const initialState = {
-  activeChat: null,
-  messages: [],
+  chats: [], // Add your chat-related state here
 };
 
-const chatSlice = createSlice({
-  name: "chat",
-  initialState,
+// Creating the chatsSlice using createSlice
+export const chatsSlice = createSlice({
+  name: "chats", // Name of the slice
+  initialState, // Initial state
   reducers: {
-    setActiveChat: (state, action) => {
-      state.activeChat = action.payload;
+    // Action to set the list of chats in the state
+    setChats: (state, action) => {
+      state.chats = action.payload.chats;
     },
-    setMessages: (state, action) => {
-      state.messages = action.payload;
+    // Action to add a new chat to the state
+    addChat: (state, action) => {
+      state.chats.push(action.payload.chat);
     },
-    addMessage: (state, action) => {
-      state.messages.push(action.payload);
-    },
-    clearChat: (state) => {
-      state.activeChat = null;
-      state.messages = [];
+    // Action to update a specific chat in the state
+    updateChat: (state, action) => {
+      const updatedChats = state.chats.map((chat) => {
+        if (chat.id === action.payload.chat.id) {
+          return action.payload.chat;
+        }
+        return chat;
+      });
+      state.chats = updatedChats;
     },
   },
 });
 
-export const { setActiveChat, setMessages, addMessage, clearChat } = chatSlice.actions;
-export default chatSlice.reducer;
+// Exporting specific actions from the chatsSlice
+export const { setChats, addChat, updateChat } = chatsSlice.actions;
+
+export default chatsSlice.reducer; // Exporting the chatsSlice reducer for use in the Redux store

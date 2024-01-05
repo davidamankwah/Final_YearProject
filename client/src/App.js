@@ -29,7 +29,7 @@ function App() {
             />
             <Route path="/profile/:userId" element={isAuth ? <ProfilePage /> : <Navigate to="/" />}  />
             <Route
-              path="/chat"
+              path="/chat/:userId"
               element={isAuth ? <Chat /> : <Navigate to="/" />}
             />
           </Routes>
