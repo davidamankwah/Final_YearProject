@@ -67,7 +67,6 @@ export const authSlice = createSlice({
       state.chats = updatedChats;
     }, 
     setMessages: (state, action) => {
-      // Update the state with the fetched messages for a specific chat
       const { chatId, messages } = action.payload;
       state.messages[chatId] = messages;
     },
