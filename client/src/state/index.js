@@ -5,9 +5,10 @@ const initialState = {
   user: null,
   token: null,
   posts: [],
-  messages: {},
+  messages: {}, // Make sure you have the messages object
   chats: [], // New state for chats
- // dislikes: {}, // Add this line
+  users: [], // Array of users
+ 
 };
 // Creating the authSlice using createSlice
 export const authSlice = createSlice({
@@ -70,6 +71,7 @@ export const authSlice = createSlice({
       const { chatId, messages } = action.payload;
       state.messages[chatId] = messages;
     },
+    
   },
 });
 

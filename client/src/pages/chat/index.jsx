@@ -4,12 +4,12 @@ import { setChats, setMessages } from '../../state';
 import { useParams } from 'react-router-dom';
 import './chat.css';
 
-
 const Chat = () => {
   const dispatch = useDispatch();
   const [selectedChat, setSelectedChat] = useState(null);
   const chats = useSelector((state) => state.chats);
-  console.log('Chats state:', chats);
+  const messages = useSelector((state) => state.messages); // Updated to get messages directly
+
   const { userId } = useParams();
 
   useEffect(() => {
@@ -34,8 +34,6 @@ const Chat = () => {
   }, [dispatch, userId]);
 
   const fetchMessages = async (chatId) => {
-    console.log('Fetching messages for chatId:', chatId);
-
     try {
       const response = await fetch(`http://localhost:4000/messages/${chatId}`, {
         method: 'GET',
@@ -46,7 +44,6 @@ const Chat = () => {
       }
 
       const data = await response.json();
-      // Dispatch an action to update the state with the fetched messages
       dispatch(setMessages({ chatId, messages: data }));
     } catch (error) {
       console.error('Error fetching messages:', error.message);
@@ -57,7 +54,11 @@ const Chat = () => {
     setSelectedChat(chatId);
     fetchMessages(chatId);
   };
-  
+
+  // Log relevant information for debugging
+  console.log('Selected Chat:', selectedChat);
+  console.log('Chats:', chats);
+  console.log('Messages:', messages[selectedChat]);
 
   return (
     <div className="Chat">
@@ -72,7 +73,7 @@ const Chat = () => {
                 className={`Chat-item ${selectedChat === chat._id ? 'selected' : ''}`}
                 onClick={() => handleChatSelect(chat._id)}
               >
-                {chat.members} {/* Display chat name or other relevant information */}
+                {chat.members}
               </div>
             ))}
           </div>
@@ -86,14 +87,12 @@ const Chat = () => {
           {selectedChat && (
             <div className="Chat-messages">
               {/* Display messages for the selected chat */}
-              {chats
-                .find((chat) => chat.id === selectedChat)
-                ?.messages.map((message) => (
-                  <div key={message._id}>
-                    <p>{message.text}</p>
-                    <span>{message.senderId}</span>
-                  </div>
-                ))}
+              {messages[selectedChat]?.map((message) => (
+                <div key={message._id}>
+                  <p>{message.text}</p>
+                  <span>{message.senderId}</span>
+                </div>
+              ))}
             </div>
           )}
         </div>
