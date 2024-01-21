@@ -71,7 +71,10 @@ export const authSlice = createSlice({
       const { chatId, messages } = action.payload;
       state.messages[chatId] = messages;
     },
-    
+
+    setUsers: (state, action) => {
+      state.users = action.payload.users;
+    },
   },
 });
 
@@ -86,6 +89,7 @@ export const authSlice = createSlice({
     addChat,
     updateChat,
     setMessages,
+    setUsers,
   } = authSlice.actions;
   
 export default authSlice.reducer; // Exporting the authSlice reducer for use in the Redux store

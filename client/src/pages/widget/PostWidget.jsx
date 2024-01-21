@@ -213,6 +213,7 @@ const handleCommentSubmit = async () => {
                   <Divider />
                   {/* Displaying each comment with a divider */}
                   <Typography sx={{ color: '#ffffff', m: "0.5rem 0", pl: "1rem" }}>
+                  <strong>{comment.userName}: </strong>
                     {comment.text}
                   </Typography>
                 </Box>

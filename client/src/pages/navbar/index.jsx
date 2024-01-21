@@ -59,10 +59,12 @@ const Navbar = () => {
       navigate(`/profile/${userId}`);
     };
 
-    const handleChatClick = (userId) => {
-      // Navigate to the user's chat page
-      navigate(`/chat/${userId}`);
-    };
+ const handleChatClick = (userId) => {
+  console.log('Navigating to chat with userId:', userId);
+  navigate(`/chat/${userId}`);
+};
+
+    
   
     return (
         <FlexBetween padding="1rem 6%" backgroundColor={alt}>
@@ -112,9 +114,7 @@ const Navbar = () => {
       {/* DESKTOP NAV */}
       {isNonMobileScreens ? (
         <FlexBetween gap="2rem">
-          <Link to="/chat" style={{ textDecoration: 'none', color: 'inherit' }}>
-          <Message sx={{ fontSize: "25px" }} />
-          </Link>
+          <Message key={user._id} onClick={() => handleChatClick(user._id)} sx={{ fontSize: "25px" }} />
           <FormControl variant="standard" value={fullName}>
             <Select
               value={fullName}
@@ -176,10 +176,8 @@ const Navbar = () => {
             justifyContent="center"
             alignItems="center"
             gap="3rem"
-          >
-             
-            <Message onClick={() => handleChatClick(user._id)} sx={{ fontSize: "25px" }} />
-            
+          >    
+            <Message key={user._id} onClick={() => handleChatClick(user._id)} sx={{ fontSize: "25px" }} />
             <FormControl variant="standard" value={fullName}>
               <Select
                 value={fullName}
