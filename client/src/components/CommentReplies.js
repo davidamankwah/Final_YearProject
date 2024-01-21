@@ -1,4 +1,3 @@
-// CommentReplies.js
 import React, { useState } from 'react';
 import { Box, Divider, IconButton, Typography } from "@mui/material";
 import {
@@ -8,9 +7,24 @@ import {
 import FlexBetween from './FlexBetween';
 
 const CommentReplies = ({ replies }) => {
+  const [isVisible, setIsVisible] = useState(false);
+
+  const toggleVisibility = () => {
+    setIsVisible(!isVisible);
+  };
+
   return (
     <Box mt="0.5rem">
-      {replies.map((reply, i) => (
+      <Divider />
+      <IconButton onClick={toggleVisibility}>
+        {isVisible ? (
+          <Typography>Show Less Replies</Typography>
+        ) : (
+          <Typography>Show More Replies ({replies.length})</Typography>
+        )}
+      </IconButton>
+
+      {isVisible && replies.map((reply, i) => (
         <Box key={i}>
           <Divider />
           {/* Displaying each reply with a divider */}

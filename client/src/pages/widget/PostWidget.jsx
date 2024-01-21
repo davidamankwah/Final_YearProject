@@ -36,6 +36,7 @@ import { setPost } from "../../state";
     // State to manage the display of comments
     const [commentText, setCommentText] = useState('');
     const [isComments, setIsComments] = useState(false);
+    const [isReplying, setIsReplying] = useState(false); // Added state for replying
     const [isUpdating, setIsUpdating] = useState(false);
     // Get the userName from your Redux state or wherever it's stored
     const names = useSelector((state) => state.user.userName);
@@ -247,24 +248,33 @@ const handleReplySubmit = async (commentId) => {
                 {comment.text}
               </Typography>
 
-              {/* Allow users to reply to comments */}
-              <Box>
-                <textarea
-                  value={commentText}
-                  onChange={(e) => setCommentText(e.target.value)}
-                  placeholder="Type your reply..."
-                />
-                <button onClick={() => handleReplySubmit(comment._id)}>
-                  Submit Reply
-                </button>
-              </Box>
+          {/* Allow users to reply to comments */}
+         <Box>
+        <button onClick={() => setIsReplying(!isReplying)}>
+          {isReplying ? 'Cancel Reply' : 'Add Reply'}
+        </button>
 
-              {/* Display replies for each comment */}
-              {comment.replies && comment.replies.length > 0 && (
-                <CommentReplies replies={comment.replies} />
-              )}
-            </Box>
-          ))}
+        {/* Display textarea and Submit Reply button when replying */}
+        {isReplying && (
+          <Box>
+            <textarea
+              value={commentText}
+              onChange={(e) => setCommentText(e.target.value)}
+              placeholder="Type your reply..."
+            />
+            <button onClick={() => handleReplySubmit(comment._id)}>
+              Submit Reply
+            </button>
+          </Box>
+        )}
+
+        {/* Display replies for each comment */}
+        {comment.replies && comment.replies.length > 0 && (
+          <CommentReplies replies={comment.replies} />
+        )}
+      </Box>
+    </Box>
+  ))}
           <Divider />
         </Box>
       )}
