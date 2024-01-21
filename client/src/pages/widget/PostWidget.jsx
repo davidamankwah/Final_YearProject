@@ -3,6 +3,7 @@ import { Box, Divider, IconButton, Typography, useTheme } from "@mui/material";
 import FlexBetween from "../../components/FlexBetween";
 import Follower from "../../components/Follower";
 import StyledWrapper from "../../components/Wrapper";
+import CommentReplies from "../../components/CommentReplies";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import EditsPostForm from "../../components/EditsPostForm";
@@ -124,6 +125,7 @@ import { setPost } from "../../state";
     setIsUpdating(true);
   };
   
+ 
   // Function to handle comment submission
 const handleCommentSubmit = async () => {
   // Send a POST request to add a comment
@@ -150,6 +152,34 @@ const handleCommentSubmit = async () => {
   }
 };
 
+const handleReplySubmit = async (commentId) => {
+  try {
+    const response = await fetch(`http://localhost:4000/posts/${postId}/comments/${commentId}/replies`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearep ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        userId: loggedInUserId,
+        userName: names,
+        text: commentText,
+      }),
+    });
+
+    if (response.ok) {
+      const updatedPost = await response.json();
+      dispatch(setPost({ post: updatedPost }));
+
+      // Clear the comment text
+      setCommentText('');
+    } else {
+      console.error('Failed to add reply. Server response:', response.statusText);
+    }
+  } catch (error) {
+    console.error('Error in handleReplySubmit:', error);
+  }
+};
 
     return (
       <StyledWrapper m="2rem 0">
@@ -206,21 +236,38 @@ const handleCommentSubmit = async () => {
 
           {/* Displaying comments if the comments section is open */}
         </FlexBetween>
-                  {isComments && (
-            <Box mt="0.5rem">
-              {comments.map((comment, i) => (
-                <Box key={`${name}-${i}`}>
-                  <Divider />
-                  {/* Displaying each comment with a divider */}
-                  <Typography sx={{ color: '#ffffff', m: "0.5rem 0", pl: "1rem" }}>
-                  <strong>{comment.userName}: </strong>
-                    {comment.text}
-                  </Typography>
-                </Box>
-              ))}
+        {isComments && (
+        <Box mt="0.5rem">
+          {comments.map((comment, i) => (
+            <Box key={`${name}-${i}`}>
               <Divider />
+              {/* Displaying each comment with a divider */}
+              <Typography sx={{ color: '#ffffff', m: "0.5rem 0", pl: "1rem" }}>
+                <strong>{comment.userName}: </strong>
+                {comment.text}
+              </Typography>
+
+              {/* Allow users to reply to comments */}
+              <Box>
+                <textarea
+                  value={commentText}
+                  onChange={(e) => setCommentText(e.target.value)}
+                  placeholder="Type your reply..."
+                />
+                <button onClick={() => handleReplySubmit(comment._id)}>
+                  Submit Reply
+                </button>
+              </Box>
+
+              {/* Display replies for each comment */}
+              {comment.replies && comment.replies.length > 0 && (
+                <CommentReplies replies={comment.replies} />
+              )}
             </Box>
-          )}
+          ))}
+          <Divider />
+        </Box>
+      )}
 
         {/* Delete button */}
       {loggedInUserId === postUserId && (

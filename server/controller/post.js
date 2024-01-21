@@ -21,6 +21,7 @@ export const createPost = async (req, res) => {
       likes: {}, // Initializing likes as an empty map
       dislikes: {}, 
       comments: [],// Initializing comments as an empty array
+      
     });
     // Saving the new post to the database
     await newPost.save();
