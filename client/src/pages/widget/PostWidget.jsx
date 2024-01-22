@@ -1,5 +1,5 @@
 import {ChatBubbleOutlineOutlined,FavoriteBorderOutlined,FavoriteOutlined, DeleteOutlined, EditOutlined, ThumbDownOutlined,ThumbDownAltOutlined} from "@mui/icons-material";
-import { Box, Divider, IconButton, Typography, useTheme, Button } from "@mui/material";
+import { Box, Divider, IconButton, Typography, useTheme, Button, TextField } from "@mui/material";
 import FlexBetween from "../../components/FlexBetween";
 import Follower from "../../components/Follower";
 import StyledWrapper from "../../components/Wrapper";
@@ -262,14 +262,19 @@ const handleReplySubmit = async (commentId) => {
         {/* Display textarea and Submit Reply button when replying */}
         {isReplying && (
           <Box>
-            <textarea
+            <TextField
               value={commentText}
               onChange={(e) => setCommentText(e.target.value)}
               placeholder="Type your reply..."
             />
-            <button onClick={() => handleReplySubmit(comment._id)}>
+            <Button onClick={() => handleReplySubmit(comment._id)}
+            sx={{
+              color: palette.background.alt,
+              backgroundColor: palette.primary.main,
+              borderRadius: "3rem",
+            }}>
               Submit Reply
-            </button>
+            </Button>
           </Box>
         )}
 
@@ -309,12 +314,16 @@ const handleReplySubmit = async (commentId) => {
       {/* Display the comment form if isCommenting is true */}
       {isComments && (
         <Box>
-          <textarea
+          <TextField
             value={commentText}
             onChange={(e) => setCommentText(e.target.value)}
             placeholder="Type your comment..."
           />
-          <button onClick={handleCommentSubmit}>Submit Comment</button>
+          <Button onClick={handleCommentSubmit}  sx={{
+              color: palette.background.alt,
+              backgroundColor: palette.primary.main,
+              borderRadius: "3rem",
+            }}>Submit Comment</Button>
         </Box>
       )}
        

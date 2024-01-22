@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { setPost } from '../state';
+import { Button, TextField, useTheme} from "@mui/material";
 
 const EditsPostForm = ({ postId, currentText, onUpdate }) => {
   const [editedText, setEditedText] = useState(currentText);
@@ -10,6 +11,9 @@ const EditsPostForm = ({ postId, currentText, onUpdate }) => {
   const token = useSelector((state) => state.token);
   const loggedInUserId = useSelector((state) => state.user._id);
   const dispatch = useDispatch();
+  const { palette } = useTheme();
+  const main = palette.neutral.main;
+  const primary = palette.primary.main;
 
   const handleUpdate = async () => {
     try {
@@ -42,8 +46,12 @@ const EditsPostForm = ({ postId, currentText, onUpdate }) => {
 
   return (
     <div>
-      <textarea value={editedText} onChange={(e) => setEditedText(e.target.value)} />
-      <button onClick={handleUpdate}>Update Post</button>
+      <TextField value={editedText} onChange={(e) => setEditedText(e.target.value)}/>
+      <Button onClick={handleUpdate} sx={{
+              color: palette.background.alt,
+              backgroundColor: palette.primary.main,
+              borderRadius: "3rem",
+            }}>Update Post</Button>
     </div>
   );
 };

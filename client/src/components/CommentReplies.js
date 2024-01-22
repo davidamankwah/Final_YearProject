@@ -1,10 +1,5 @@
 import React, { useState } from 'react';
 import { Box, Divider, IconButton, Typography } from "@mui/material";
-import {
-  ThumbDownAltOutlined,
-  ThumbDownOutlined,
-} from "@mui/icons-material";
-import FlexBetween from './FlexBetween';
 
 const CommentReplies = ({ replies }) => {
   const [isVisible, setIsVisible] = useState(false);
@@ -18,9 +13,9 @@ const CommentReplies = ({ replies }) => {
       <Divider />
       <IconButton onClick={toggleVisibility}>
         {isVisible ? (
-          <Typography>Show Less Replies</Typography>
+          <Typography>Hide Replies</Typography>
         ) : (
-          <Typography>Show More Replies ({replies.length})</Typography>
+          <Typography>Show Replies ({replies.length})</Typography>
         )}
       </IconButton>
 
