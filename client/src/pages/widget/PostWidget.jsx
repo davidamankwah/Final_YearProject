@@ -1,5 +1,5 @@
 import {ChatBubbleOutlineOutlined,FavoriteBorderOutlined,FavoriteOutlined, DeleteOutlined, EditOutlined, ThumbDownOutlined,ThumbDownAltOutlined} from "@mui/icons-material";
-import { Box, Divider, IconButton, Typography, useTheme } from "@mui/material";
+import { Box, Divider, IconButton, Typography, useTheme, Button } from "@mui/material";
 import FlexBetween from "../../components/FlexBetween";
 import Follower from "../../components/Follower";
 import StyledWrapper from "../../components/Wrapper";
@@ -250,9 +250,14 @@ const handleReplySubmit = async (commentId) => {
 
           {/* Allow users to reply to comments */}
          <Box>
-        <button onClick={() => setIsReplying(!isReplying)}>
+        <Button onClick={() => setIsReplying(!isReplying)}  
+        sx={{
+              color: palette.background.alt,
+              backgroundColor: palette.primary.main,
+              borderRadius: "3rem",
+            }}>
           {isReplying ? 'Cancel Reply' : 'Add Reply'}
-        </button>
+        </Button>
 
         {/* Display textarea and Submit Reply button when replying */}
         {isReplying && (
