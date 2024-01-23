@@ -77,7 +77,24 @@ export const getRecommendedUsers = async (req, res) => {
 };
 
 // Controller function for user search
+export const searchUsers = async (req, res) => {
+  try {
+    const { query } = req.params;
+    console.log('Search Query:', query);
 
+    // Use a case-insensitive regular expression to perform the search
+    const users = await User.find({
+      userName: { $regex: new RegExp(query, 'i') },
+    });
+
+    console.log('Search Result:', users);
+
+    res.status(200).json(users);
+  } catch (error) {
+    console.error('Error in searchUsers:', error);
+    res.status(500).json({ error: error.message });
+  }
+};
 
 
 

@@ -12,8 +12,7 @@ const EditsPostForm = ({ postId, currentText, onUpdate }) => {
   const loggedInUserId = useSelector((state) => state.user._id);
   const dispatch = useDispatch();
   const { palette } = useTheme();
-  const main = palette.neutral.main;
-  const primary = palette.primary.main;
+
 
   const handleUpdate = async () => {
     try {
