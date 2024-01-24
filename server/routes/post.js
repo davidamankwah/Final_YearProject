@@ -42,5 +42,6 @@ router.patch('/:postId', verifyToken, async (req, res) => {
     }
 });
 
+
 // Exporting the router for use in other parts of the application
 export default router;

@@ -1,17 +1,21 @@
 // ProfilePage.js
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
+import PostsWid from "../widget/PostsWid";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import Navbar from "../navbar";
 import RecommendedUsers from "../../components/RecommendedUsers";
 import FollowersWidget from "../widget/FollowersWidget";
+
 import CustomUserWidget from "../widget/customUserWidget";
 import "./profile.css";
 
 const ProfilePage = () => {
   const [user, setUser] = useState(null);
+  const [showPosts, setShowPosts] = useState(false);
   const { userId } = useParams();
+  const posts = useSelector((state) => state.posts);
   const token = useSelector((state) => state.token);
 
   useEffect(() => {
@@ -31,6 +35,10 @@ const ProfilePage = () => {
     getUser();
   }, [userId, token]);
 
+  const handleShowPosts = () => {
+    setShowPosts(true);
+  };
+
   if (!user) return null;
 
   return (
@@ -46,6 +54,13 @@ const ProfilePage = () => {
           </div>
         </div>
       </div>
+      <Box mt={1}>
+        <Button variant="contained" onClick={handleShowPosts}>
+          Show Posts
+        </Button>
+        {showPosts && <PostsWid userId={userId} isProfile />}
+  
+      </Box>
     </Box>
   );
 };

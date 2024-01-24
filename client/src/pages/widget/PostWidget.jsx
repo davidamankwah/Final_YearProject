@@ -48,7 +48,6 @@ import { setPost } from "../../state";
     const likeCount = likes ? Object.keys(likes).length : 0;
     const dislikeCount = dislikes ? Object.keys(dislikes).length : 0;
     
-  
     const { palette } = useTheme();
     const main = palette.neutral.main;
     const primary = palette.primary.main;
