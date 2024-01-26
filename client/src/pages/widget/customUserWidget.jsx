@@ -1,7 +1,7 @@
 import {
   ManageAccountsOutlined,
 } from "@mui/icons-material";
-import { Box, Typography, Divider, useTheme } from "@mui/material";
+import { Box, Typography, useTheme } from "@mui/material";
 import ProfileImage from "../../components/ProfileImage";
 import StyledWrapper from "../../components/Wrapper";
 import FlexBetween from "../../components/FlexBetween";

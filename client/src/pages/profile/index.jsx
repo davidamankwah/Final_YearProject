@@ -15,7 +15,6 @@ const ProfilePage = () => {
   const [user, setUser] = useState(null);
   const [showPosts, setShowPosts] = useState(false);
   const { userId } = useParams();
-  const posts = useSelector((state) => state.posts);
   const token = useSelector((state) => state.token);
 
   useEffect(() => {
@@ -35,9 +34,10 @@ const ProfilePage = () => {
     getUser();
   }, [userId, token]);
 
-  const handleShowPosts = () => {
-    setShowPosts(true);
+  const handleTogglePosts = () => {
+    setShowPosts(!showPosts);
   };
+  
 
   if (!user) return null;
 
@@ -49,17 +49,15 @@ const ProfilePage = () => {
           <CustomUserWidget userId={userId} picturePath={user.picturePath} />
           <div className="profilePageSection large">
             <FollowersWidget userId={userId} />
-            {/* Include the RecommendedUsers component here */}
             <RecommendedUsers token={token} />
           </div>
         </div>
       </div>
-      <Box mt={1}>
-        <Button variant="contained" onClick={handleShowPosts}>
-          Show Posts
-        </Button>
-        {showPosts && <PostsWid userId={userId} isProfile />}
-  
+      <Box  m="2rem 0"  height="900px">
+      <Button variant="contained" onClick={handleTogglePosts}>
+      {showPosts ? "Hide Posts" : "Show Posts"}
+      </Button>
+      {showPosts && <PostsWid userId={userId} isProfile />}
       </Box>
     </Box>
   );
