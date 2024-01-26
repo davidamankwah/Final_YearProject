@@ -31,6 +31,10 @@ const UserSchema = new mongoose.Schema(
         type: Array,
         default: [],
       },
+      bio: {
+        type: String,
+        default: "",
+      },
     },
      { timestamps: true } // Add timestamps to the schema
 );

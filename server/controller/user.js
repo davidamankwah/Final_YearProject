@@ -96,5 +96,35 @@ export const searchUsers = async (req, res) => {
   }
 };
 
+export const changeBio = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { bio } = req.body;
 
+    // Validate that userId is a valid ObjectId (assuming you're using MongoDB ObjectId)
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      return res.status(400).json({ message: 'Invalid userId' });
+    }
+
+    // Find the user by userId
+    const user = await User.findById(userId);
+
+    // Check if the user exists
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Update the user's bio
+    user.bio = bio;
+    
+    // Save the updated user
+    await user.save();
+
+    // Send the updated user as the response
+    res.status(200).json(user);
+  } catch (error) {
+    console.error('Error updating user bio:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
 
