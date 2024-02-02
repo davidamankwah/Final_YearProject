@@ -7,7 +7,9 @@ import './chat.css';
 const Chat = () => {
   const dispatch = useDispatch();
   const [selectedChat, setSelectedChat] = useState(null);
+  const usersId = useSelector((state) => state.user._id);
   const chats = useSelector((state) => state.chats);
+  const [newMessageText, setNewMessageText] = useState(''); // State to track the new message text
   const messages = useSelector((state) => state.messages);
   const token = useSelector((state) => state.token);
   const users = useSelector((state) => state.users); // Add users to useSelector
@@ -66,8 +68,6 @@ useEffect(() => {
   fetchChats();
 }, [dispatch, userId, token]);
 
-  
-
   const fetchMessages = async (chatId) => {
     try {
       const response = await fetch(`http://localhost:4000/messages/${chatId}`, {
@@ -104,6 +104,45 @@ useEffect(() => {
   console.log('Chats:', chats);
   console.log('Users:', users);
 
+  const handleSendMessage = async (e) => {
+    e.preventDefault();
+  
+    if (!newMessageText.trim() || !selectedChat) {
+      return; // Prevent sending empty messages or if no chat is selected
+    }
+  
+    try {
+      
+  
+      const response = await fetch(`http://localhost:4000/messages/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          chatId: selectedChat,
+          text: newMessageText,
+          senderId: usersId, // Include the senderId in the request body
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to send message');
+      }
+  
+      const newMessage = await response.json();
+  
+      // Update the messages state for the selected chat
+      dispatch(setMessages({ chatId: selectedChat, messages: [...messages[selectedChat], newMessage] }));
+  
+      // Clear the new message input
+      setNewMessageText('');
+    } catch (error) {
+      console.error('Error sending message:', error.message);
+    }
+  };
+  
   return (
     <div className="Chat">
       {/* Left Side */}
@@ -154,10 +193,19 @@ useEffect(() => {
               })}
             </div>
           )}
+           {/* Message input form */}
+           <form onSubmit={handleSendMessage}>
+            <input
+              type="text"
+              value={newMessageText}
+              onChange={(e) => setNewMessageText(e.target.value)}
+              placeholder="Type your message..."
+            />
+            <button type="submit">Send</button>
+          </form>
         </div>
       </aside>
     </div>
   );
 };
-
 export default Chat;
