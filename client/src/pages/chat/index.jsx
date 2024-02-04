@@ -156,16 +156,28 @@ useEffect(() => {
     className={`Chat-item ${selectedChat === chat._id ? 'selected' : ''}`}
     onClick={() => handleChatSelect(chat._id)}
   >
+  {Array.isArray(chats) && chats.map((chat) => (
+  <div
+    key={chat._id}
+    className={`Chat-item ${selectedChat === chat._id ? 'selected' : ''}`}
+    onClick={() => handleChatSelect(chat._id)}
+  >
     {Array.isArray(chat.members) && chat.members.length > 1 ? (
       chat.members.map((memberId, index) => {
         const user = users.find((user) => user._id === memberId);
         const displayValue = user ? user.userName : memberId;
-        return index === 1 ? displayValue : null; // Display only the second member
-      }).join(', ')
+        return (
+          <span key={memberId}>{displayValue}{index === 0 ? ' , ' : ''}</span>
+        );
+      })
     ) : (
       // Handle the case when members is not an array or has less than 2 elements
       'Invalid members data'
     )}
+  </div>
+))}
+
+
   </div>
 ))}
 
