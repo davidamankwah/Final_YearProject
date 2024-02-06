@@ -4,10 +4,8 @@ import {
   getUserFollowers,
   addOrRemoveFollowers,
   searchUsers,
-  changeBio
 } from "../controller/user.js"
 import { checkToken } from "../middleware/auth.js";
-
 
 const router = express.Router();
 
@@ -22,7 +20,5 @@ router.patch("/:id/:followerId", checkToken, addOrRemoveFollowers);
 
 // Search users by username
 router.get('/search/:query',searchUsers);
-
-router.patch("/:id/bio", checkToken, changeBio);
 
 export default router;

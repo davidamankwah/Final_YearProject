@@ -21,18 +21,6 @@ import { setPost } from "../../state";
     comments,
   }) => {
 
-    console.log('PostWidget props:', {
-      postId,
-      postUserId,
-      name,
-      text,
-      picturePath,
-      profileImage,
-      likes,
-      dislikes,
-      comments,
-    });
-
     // State to manage the display of comments
     const [commentText, setCommentText] = useState('');
     const [isComments, setIsComments] = useState(false);
@@ -96,7 +84,6 @@ import { setPost } from "../../state";
       console.error("Error in patchDislike:", error);
     }
 };
-
 
     // Function to handle post deletion
   const handleDelete = async () => {
@@ -181,6 +168,29 @@ const handleReplySubmit = async (commentId) => {
   }
 };
 
+// In your React component
+const handleDeleteComment = async (postId, commentId) => {
+  try {
+    const response = await fetch(`http://localhost:4000/posts/${postId}/comments/${commentId}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearep ${token}`,
+      },
+    });
+
+    if (response.ok) {
+      const updatedPost = await response.json();
+      dispatch(setPost({ post: updatedPost }));
+      // Optionally, you can update the local state to reflect the deletion immediately
+    } else {
+      console.error('Failed to delete comment:', response.statusText);
+    }
+  } catch (error) {
+    console.error('Error in handleDeleteComment:', error);
+  }
+};
+
+
     return (
       <StyledWrapper m="2rem 0">
         {/* Displaying the user who made the post */}
@@ -245,6 +255,9 @@ const handleReplySubmit = async (commentId) => {
               <Typography sx={{ color: '#ffffff', m: "0.5rem 0", pl: "1rem" }}>
                 <strong>{comment.userName}: </strong>
                 {comment.text}
+              <IconButton onClick={() => handleDeleteComment(postId, comment._id)} sx={{ color: '#f44336' }}>
+              <DeleteOutlined />
+             </IconButton>
               </Typography>
 
           {/* Allow users to reply to comments */}
@@ -325,10 +338,8 @@ const handleReplySubmit = async (commentId) => {
             }}>Submit Comment</Button>
         </Box>
       )}
-       
       </StyledWrapper>
     );
   };
-
   // Exporting the PostWidget component for use in other parts of the application
   export default PostWidget;

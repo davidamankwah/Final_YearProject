@@ -114,7 +114,7 @@ const Navbar = () => {
       {/* DESKTOP NAV */}
       {isNonMobileScreens ? (
         <FlexBetween gap="2rem">
-          <Message key={user._id} onClick={() => handleChatClick(user._id)} sx={{ fontSize: "25px" }} />
+          <Message key={user._id} sx={{ fontSize: "25px" }} />
           <FormControl variant="standard" value={fullName}>
             <Select
               value={fullName}
@@ -177,7 +177,7 @@ const Navbar = () => {
             alignItems="center"
             gap="3rem"
           >    
-            <Message key={user._id} onClick={() => handleChatClick(user._id)} sx={{ fontSize: "25px" }} />
+            <Message key={user._id}  sx={{ fontSize: "25px" }} />
             <FormControl variant="standard" value={fullName}>
               <Select
                 value={fullName}

@@ -7,7 +7,6 @@ import { useParams } from "react-router-dom";
 import Navbar from "../navbar";
 import RecommendedUsers from "../../components/RecommendedUsers";
 import FollowersWidget from "../widget/FollowersWidget";
-
 import CustomUserWidget from "../widget/customUserWidget";
 import "./profile.css";
 

@@ -9,7 +9,6 @@ import { BrowserRouter, Navigate, Routes, Route } from "react-router-dom";
 import HomePage from './pages/home';
 import LoginPage from './pages/login';
 import ProfilePage from './pages/profile';
-import Chat from './pages/chat';
 
 function App() {
   const mode = useSelector((state) => state.mode);
@@ -28,10 +27,7 @@ function App() {
               element={isAuth ? <HomePage /> : <Navigate to="/" />}
             />
             <Route path="/profile/:userId" element={isAuth ? <ProfilePage /> : <Navigate to="/" />}  />
-            <Route
-            path="/chat/:userId"
-           element={isAuth ? <Chat /> : <Navigate to="/" />}
-           />
+           
 
           </Routes>
           </ThemeProvider>
