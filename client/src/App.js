@@ -8,6 +8,7 @@ import { themeSettings } from "./theme";
 import { BrowserRouter, Navigate, Routes, Route } from "react-router-dom";
 import HomePage from './pages/home';
 import LoginPage from './pages/login';
+import ChatsPage from './pages/chats';
 import ProfilePage from './pages/profile';
 
 function App() {
@@ -27,7 +28,10 @@ function App() {
               element={isAuth ? <HomePage /> : <Navigate to="/" />}
             />
             <Route path="/profile/:userId" element={isAuth ? <ProfilePage /> : <Navigate to="/" />}  />
-           
+            <Route
+              path="/chats"
+              element={isAuth ? <ChatsPage /> : <Navigate to="/" />}
+            />
 
           </Routes>
           </ThemeProvider>

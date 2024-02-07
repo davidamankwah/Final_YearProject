@@ -18,6 +18,8 @@ import commentRouter from "./routes/comment.js";
 import replyRouter from "./routes/reply.js";
 import { checkToken } from "./middleware/auth.js";
 import { register } from "./controller/auth.js";
+import http from 'http';
+import { Server as SocketIOServer } from 'socket.io';
 
 
 //Configurations of dependecies 
@@ -27,6 +29,13 @@ dotenv.config();
 
 // Create Express app
 const app = express();
+const server = http.createServer(app); // Create HTTP server
+
+// Socket.IO setup
+const io = new SocketIOServer(server, { cors: { origin: "*" } }); // Allow all origins for CORS
+
+// Set the Socket.IO server to listen on port 4001
+io.listen(4001);
 
 app.use(express.json());
 app.use(helmet());
@@ -63,8 +72,27 @@ app.use("/posts", postRoutes);
 app.use('/posts', commentRouter);
 app.use('/posts', replyRouter);
 
-//Mongoose set up
-const PORT = process.env.PORT || 4001; // Set port to 4000 
+// Socket.IO connection handler
+io.on("connection", (socket) => {
+  console.log("A user connected: ", socket.id);
+
+  // Joining a room
+  socket.on("join_room", (data) => {
+    socket.join(data);
+    console.log("User joined room:", data);
+  });
+
+  // Sending a message
+  socket.on("send_message", (data) => {
+    console.log(data);
+    socket.to(data.room).emit("receive_message", data.content);
+  });
+
+  // Handling disconnections
+  socket.on("disconnect", () => {
+    console.log("User disconnected: ", socket.id);
+  });
+});
 
 // Connect to the database
 mongoose
@@ -73,5 +101,6 @@ mongoose
     useUnifiedTopology: true,
   }).then(() => {
     // Start the server
-    app.listen(PORT, () => console.log(`Server listening on port ${PORT}`) );
+    const PORT = process.env.PORT || 4001;
+    server.listen(PORT, () => console.log(`Server listening on port ${PORT}`) );
   }).catch((error) => console.log(`${error} did not connect`))
