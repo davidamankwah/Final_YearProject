@@ -25,7 +25,9 @@ const HomePage = () => {
       <Navbar />
       <div className="homePage">
         <div className="homePageSection">
+        <div className="homePageSectionWithSticky">
           <CustomUserWidget userId={user._id} picturePath={user.picturePath} />
+          </div>
         </div>
         <div className="homePageSection large">
           <UserPostWidget picturePath={user.picturePath} />
@@ -36,7 +38,9 @@ const HomePage = () => {
           )}
         </div>
         <div className="homePageSection">
+        <div className="homePageSectionWithSticky">
           <FollowersWidget userId={user._id} />
+          </div>
         </div>
       </div>
     </Box>

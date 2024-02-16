@@ -4,10 +4,11 @@ import FlexBetween from "../../components/FlexBetween";
 import Follower from "../../components/Follower";
 import StyledWrapper from "../../components/Wrapper";
 import CommentReplies from "../../components/CommentReplies";
-import { useState } from "react";
+import { useState, useEffect  } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import EditsPostForm from "../../components/EditsPostForm";
 import { setPost } from "../../state";
+import io from 'socket.io-client'; // Import Socket.IO client
   
   const PostWidget = ({
     postId,
@@ -39,22 +40,53 @@ import { setPost } from "../../state";
     const { palette } = useTheme();
     const main = palette.neutral.main;
     const primary = palette.primary.main;
-  
-    // Function to handle liking or unliking a post
-    const patchLike = async () => {
-      // Sending a PATCH request to update like status
-      const response = await fetch(`http://localhost:4000/posts/${postId}/like`, {
-        method: "PATCH",
-        headers: {
-           Permitted: `Bearer ${token}`, // Including the bearer token for authentication
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ userId: loggedInUserId }),
+    // Socket.IO connection
+   const socket = io('http://localhost:4001'); 
+
+    // Listen for notifications from the server
+    useEffect(() => {
+      socket.on("notification", (data) => {
+        console.log('Notification:', data.message);
+         alert(data.message); 
       });
+    
+      return () => {
+        socket.disconnect();
+      };
+    });
+    
+// Function to handle liking or unliking a post
+const patchLike = async () => {
+  try {
+    // Sending a PATCH request to update like status
+    const response = await fetch(`http://localhost:4000/posts/${postId}/like`, {
+      method: "PATCH",
+      headers: {
+        Permitted: `Bearer ${token}`, // Including the bearer token for authentication
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ userId: loggedInUserId }),
+    });
+
+    if (response.ok) {
       // Updating the Redux state with the updated post
       const updatedPost = await response.json();
       dispatch(setPost({ post: updatedPost }));
-    };
+
+      // Emit a socket event to notify users of the like action
+      socket.emit('like', { postId, userId: loggedInUserId, userName: names });
+
+
+      // Optionally, you can also handle the notification here on the client-side
+      console.log('Liked post:', postId);
+    } else {
+      console.error("Failed to update like status");
+    }
+  } catch (error) {
+    console.error("Error in patchLike:", error);
+  }
+};
+
 
     // Function to handle disliking or undisliking a post
   const patchDislike = async () => {

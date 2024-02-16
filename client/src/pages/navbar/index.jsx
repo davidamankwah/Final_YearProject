@@ -59,13 +59,11 @@ const Navbar = () => {
       navigate(`/profile/${userId}`);
     };
 
- const handleChatClick = () => {
-  console.log('Navigating to chat with userId:');
-  navigate(`/chats/`);
-};
+   const handleChatClick = () => {
+    console.log('Navigating to chat');
+    navigate(`/chats/`);
+   };
 
-    
-  
     return (
         <FlexBetween padding="1rem 6%" backgroundColor={alt}>
       <FlexBetween gap="1.75rem">
@@ -178,6 +176,7 @@ const Navbar = () => {
             gap="3rem"
           >    
             <Message key={user._id}  onClick={() => handleChatClick()} sx={{ fontSize: "25px" }} />
+
             <FormControl variant="standard" value={fullName}>
               <Select
                 value={fullName}

@@ -14,6 +14,7 @@ import { fileURLToPath } from "url";
 import userRoutes from "./routes/user.js";
 import authRoutes from "./routes/auth.js";
 import postRoutes from "./routes/post.js";
+import messageRoutes from "./routes/message.js";
 import commentRouter from "./routes/comment.js";
 import replyRouter from "./routes/reply.js";
 import { checkToken } from "./middleware/auth.js";
@@ -34,7 +35,7 @@ const server = http.createServer(app); // Create HTTP server
 // Socket.IO setup
 const io = new SocketIOServer(server, { cors: { origin: "*" } }); // Allow all origins for CORS
 
-// Set the Socket.IO server to listen on port 4001
+// Set the Socket.IO server to listen on port 4000
 io.listen(4001);
 
 app.use(express.json());
@@ -71,6 +72,7 @@ app.use("/users", userRoutes);
 app.use("/posts", postRoutes);
 app.use('/posts', commentRouter);
 app.use('/posts', replyRouter);
+app.use('/messages', messageRoutes);
 
 // Socket.IO connection handler
 io.on("connection", (socket) => {
@@ -88,6 +90,14 @@ io.on("connection", (socket) => {
     socket.to(data.room).emit("receive_message", data.content);
   });
 
+    // Listen for 'like' event
+    socket.on("like", ({ postId, userId, userName }) => {
+      // Broadcast a notification to all other users except the one who initiated the like action
+      socket.broadcast.emit("notification", {
+        message: `${userName} liked post ${postId}`,
+      });
+    });
+    
   // Handling disconnections
   socket.on("disconnect", () => {
     console.log("User disconnected: ", socket.id);

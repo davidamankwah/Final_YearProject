@@ -1,62 +1,65 @@
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux"; // Importing useSelector to access data from Redux store
 import io from "socket.io-client";
+import HomeIcon from '@mui/icons-material/Home';
+import { useNavigate } from "react-router-dom";
 import "./chats.css";
 
 let socket;
 const CONNECTION_PORT = "http://localhost:4001";
 
-
 const ChatsPage = () => {
-    const [loggedIn, setLoggedIn] = useState(false);
-    const [room, setRoom] = useState("");
-    const [userName, setUserName] = useState("");
-    const [message, setMessage] = useState("");
-    const [messageList, setMessageList] = useState([]);
-  
-    useEffect(() => {
-        socket = io(CONNECTION_PORT);
-      }, [CONNECTION_PORT]);
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [room, setRoom] = useState("");
+  const [message, setMessage] = useState("");
+  const navigate = useNavigate();
+  const [messageList, setMessageList] = useState([]);
 
-      useEffect(() => {
-        socket.on("receive_message", (data) => {
-          setMessageList([...messageList, data]);
-        });
-      });
+  // Accessing userName from Redux store
+  const userName = useSelector((state) => state.user.userName);
 
-      const connectToRoom = () => {
-        setLoggedIn(true);
-        socket.emit("join_room", room);
-      };
+  useEffect(() => {
+    socket = io(CONNECTION_PORT);
+  }, [CONNECTION_PORT]);
 
-      const sendMessage = async () => {
-        let messageContent = {
-          room: room,
-          content: {
-            author: userName,
-            message: message,
-          },
-        };
-    
-        await socket.emit("send_message", messageContent);
-        setMessageList([...messageList, messageContent.content]);
-        setMessage("");
-      };
-    
-    return (
-        <div className="Chat">
-          {!loggedIn ? (
+  useEffect(() => {
+    socket.on("receive_message", (data) => {
+      setMessageList([...messageList, data]);
+    });
+  });
+
+  const connectToRoom = () => {
+    setLoggedIn(true);
+    socket.emit("join_room", room);
+  };
+
+  const sendMessage = async () => {
+    let messageContent = {
+      room: room,
+      content: {
+        author: userName, // Assigning the current user's name
+        message: message,
+      },
+    };
+
+    await socket.emit("send_message", messageContent);
+    setMessageList([...messageList, messageContent.content]);
+    setMessage("");
+  };
+
+  const handleHomeClick = () => {
+    console.log('Navigating to home');
+    navigate(`/home/`);
+  };
+
+  return (
+    <div className="Chat">
+      {!loggedIn ? (
         <div className="logIn">
           <div className="inputs">
             <input
               type="text"
-              placeholder="Name..."
-              onChange={(e) => {
-                setUserName(e.target.value);
-              }}
-            />
-            <input
-              type="text"
-              placeholder="Room..."
+              placeholder="Enter a Room"
               onChange={(e) => {
                 setRoom(e.target.value);
               }}
@@ -66,21 +69,19 @@ const ChatsPage = () => {
         </div>
       ) : (
         <div className="chatContainer">
-   <div className="messages">
-  {messageList.map((val) => {
-    return (
-      <div
-        className="messageContainer"
-        id={val.author === userName ? "You" : "Other"}
-        key={val.id} // Assuming val has a unique identifier like an id
-      >
-        <div className="messageIndividual">
-          {val.author}: {val.message}
-        </div>
-      </div>
-    );
-  })}
-</div>
+          <div className="messages">
+            {messageList.map((val, index) => (
+              <div
+                className="messageContainer"
+                id={val.author === userName ? "You" : "Other"}
+                key={index} // Assuming val has a unique identifier like an id
+              >
+                <div className="messageIndividual">
+                  {val.author}: {val.message}
+                </div>
+              </div>
+            ))}
+          </div>
           <div className="messageInputs">
             <input
               type="text"
@@ -94,9 +95,9 @@ const ChatsPage = () => {
         </div>
       )}
       <h1>Live Chats</h1>
-        </div>
-    
-    );
-  };
-  
-  export default ChatsPage;
+      <HomeIcon onClick={() => handleHomeClick()}></HomeIcon>
+    </div>
+  );
+};
+
+export default ChatsPage;

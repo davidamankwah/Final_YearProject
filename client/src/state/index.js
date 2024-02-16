@@ -5,8 +5,6 @@ const initialState = {
   user: null,
   token: null,
   posts: [],
-  messages: {}, // Make sure you have the messages object
-  chats: [], // New state for chats
   users: [], // Array of users
  
 };
@@ -49,32 +47,6 @@ export const authSlice = createSlice({
         state.posts = updatedPosts;
       }
     },  
-     // Action to set the list of chats in the state
-     setChats: (state, action) => {
-      state.chats = action.payload.chats;
-    },
-    // Action to add a new chat to the state
-    addChat: (state, action) => {
-      state.chats.push(action.payload.chat);
-    },
-    // Action to update a specific chat in the state
-    updateChat: (state, action) => {
-      const updatedChats = state.chats.map((chat) => {
-        if (chat.id === action.payload.chat.id) {
-          return action.payload.chat;
-        }
-        return chat;
-      });
-      state.chats = updatedChats;
-    }, 
-    setMessages: (state, action) => {
-      const { chatId, messages } = action.payload;
-      state.messages[chatId] = messages;
-    },
-
-    setUsers: (state, action) => {
-      state.users = action.payload.users;
-    },
   },
 });
 
@@ -85,11 +57,10 @@ export const authSlice = createSlice({
     setFollowers,
     setPosts,
     setPost,
-    setChats, // New chat-related actions
-    addChat,
-    updateChat,
-    setMessages,
     setUsers,
+    sendMessage,
+    retrieveMessages,
+    deleteMessage,
   } = authSlice.actions;
   
 export default authSlice.reducer; // Exporting the authSlice reducer for use in the Redux store
