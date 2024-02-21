@@ -33,6 +33,7 @@ dotenv.config();
 const app = express();
 const server = http.createServer(app); // Create HTTP server
 app.use(express.static(paths.join(__dirname, "build")));
+app.use('/static', express.static(paths.join(__dirname, 'build//static')));
 // Socket.IO setup
 const io = new SocketIOServer(server, { cors: { origin: "*" } }); // Allow all origins for CORS
 
