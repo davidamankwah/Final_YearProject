@@ -70,7 +70,7 @@ import {EditOutlined,DeleteOutlined,ImageOutlined,} from "@mui/icons-material";
             p="1rem"
           >
             <Dropzone
-              acceptedFiles=".jpg,.jpeg,.png"
+              acceptedFiles=".jpg,.jpeg,.png,.gif,.mp4"
               multiple={false}
               onDrop={(acceptedFiles) => setImage(acceptedFiles[0])}
             >
@@ -85,7 +85,7 @@ import {EditOutlined,DeleteOutlined,ImageOutlined,} from "@mui/icons-material";
                   >
                     <input {...getInputProps()} />
                     {!image ? (
-                      <p>Add Image Here</p>
+                      <p>Add File Here</p>
                     ) : (
                       <FlexBetween>
                         <Typography>{image.name}</Typography>
@@ -118,7 +118,7 @@ import {EditOutlined,DeleteOutlined,ImageOutlined,} from "@mui/icons-material";
               color={mediumMain}
               sx={{ "&:hover": { cursor: "pointer", color: medium } }}
             >
-              Image
+              Upload File
             </Typography>
           </FlexBetween>
            {/* Button to submit the post, disabled if no text is entered */}

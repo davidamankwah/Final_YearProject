@@ -10,6 +10,7 @@ import HomePage from './pages/home';
 import LoginPage from './pages/login';
 import ChatsPage from './pages/chats';
 import ProfilePage from './pages/profile';
+import NotfiPage from './pages/notification';
 
 function App() {
   const mode = useSelector((state) => state.mode);
@@ -32,7 +33,11 @@ function App() {
               path="/chats"
               element={isAuth ? <ChatsPage /> : <Navigate to="/" />}
             />
-
+             <Route
+              path="/notification"
+              element={isAuth ? <NotfiPage /> : <Navigate to="/" />}
+            />
+           
           </Routes>
           </ThemeProvider>
       </BrowserRouter>

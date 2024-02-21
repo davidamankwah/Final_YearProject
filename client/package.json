@@ -2,9 +2,11 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
+  "proxy": "https://www.connect.onrender.com",
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@fvilers/disable-react-devtools": "^1.3.0",
     "@mui/icons-material": "^5.14.16",
     "@mui/material": "^5.14.17",
     "@reduxjs/toolkit": "^1.9.7",

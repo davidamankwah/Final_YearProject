@@ -16,6 +16,7 @@ import {
   Menu,
   Close,
 } from "@mui/icons-material";
+import NotificationsIcon from '@mui/icons-material/Notifications';
 import { useDispatch, useSelector } from "react-redux";
 import { setLogout } from "../../state";
 
@@ -54,6 +55,7 @@ const Navbar = () => {
       }
     };      
 
+    //navigate functions
     const handleProfileClick = (userId) => {
       // Navigate to the user's profile page
       navigate(`/profile/${userId}`);
@@ -62,6 +64,11 @@ const Navbar = () => {
    const handleChatClick = () => {
     console.log('Navigating to chat');
     navigate(`/chats/`);
+   };
+
+   const handleNotifyClick = () => {
+    console.log('Navigating to chat');
+    navigate(`/notification/`);
    };
 
     return (
@@ -113,6 +120,7 @@ const Navbar = () => {
       {isNonMobileScreens ? (
         <FlexBetween gap="2rem">
           <Message key={user._id} onClick={() => handleChatClick()}  sx={{ fontSize: "25px" }} />
+          <NotificationsIcon onClick={() => handleNotifyClick()}></NotificationsIcon>
           <FormControl variant="standard" value={fullName}>
             <Select
               value={fullName}
@@ -176,7 +184,7 @@ const Navbar = () => {
             gap="3rem"
           >    
             <Message key={user._id}  onClick={() => handleChatClick()} sx={{ fontSize: "25px" }} />
-
+            <NotificationsIcon onClick={() => handleNotifyClick()}></NotificationsIcon>
             <FormControl variant="standard" value={fullName}>
               <Select
                 value={fullName}

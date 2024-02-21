@@ -235,16 +235,24 @@ const handleDeleteComment = async (postId, commentId) => {
         <Typography color={main} sx={{ mt: "1rem" }}>
           {text}
         </Typography>
-        {/* Displaying the post image if available */}
-        {picturePath && (
-          <img
-            width="100%"
-            height="auto"
-            alt="post"
-            style={{ borderRadius: "0.75rem", marginTop: "0.75rem" }}
-            src={`http://localhost:4000/assets/${picturePath}`}
-          />
-        )}
+      {/* Displaying the post media if available */}
+{picturePath && (
+  <div style={{ borderRadius: "0.75rem", marginTop: "0.75rem" }}>
+    {picturePath.endsWith('.mp4') ? (
+      <video width="100%" height="auto" controls>
+        <source src={`http://localhost:4000/assets/${picturePath}`} type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+    ) : (
+      <img
+        width="100%"
+        height="auto"
+        alt="post"
+        src={`http://localhost:4000/assets/${picturePath}`}
+      />
+    )}
+  </div>
+)}
         {/* Section for like and comment */}
         <FlexBetween mt="0.25rem">
           {/* Section for like and comment counts */}
