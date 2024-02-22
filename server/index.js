@@ -40,6 +40,7 @@ const io = new SocketIOServer(server, { cors: { origin: "*" } }); // Allow all o
 // Set the Socket.IO server to listen on port 4000
 io.listen(4001);
 
+//expess
 app.use(express.json());
 app.use(helmet());
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" })); // Allow cross-origin resource sharing

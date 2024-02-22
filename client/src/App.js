@@ -1,3 +1,4 @@
+//imports
 import logo from './logo.svg';
 import './App.css';
 import { useMemo } from "react";
@@ -11,6 +12,7 @@ import LoginPage from './pages/login';
 import ChatsPage from './pages/chats';
 import ProfilePage from './pages/profile';
 import NotfiPage from './pages/notification';
+
 
 function App() {
   const mode = useSelector((state) => state.mode);
