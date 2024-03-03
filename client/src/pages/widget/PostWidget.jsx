@@ -76,7 +76,6 @@ const patchLike = async () => {
       // Emit a socket event to notify users of the like action
       socket.emit('like', { postId, userId: loggedInUserId, userName: names });
 
-
       // Optionally, you can also handle the notification here on the client-side
       console.log('Liked post:', postId);
     } else {
