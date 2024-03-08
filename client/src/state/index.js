@@ -7,7 +7,7 @@ const initialState = {
   posts: [],
   users: [], // Array of users
   notifications: [], // New state to store notifications
- 
+  messages: [],
 };
 // Creating the authSlice using createSlice
 export const authSlice = createSlice({
@@ -51,6 +51,9 @@ export const authSlice = createSlice({
     setNotifications: (state, action) => {
       state.notifications = action.payload;
     },
+    setMessages: (state, action) => {
+      state.messages = action.payload;
+    },
   },
 });
 
@@ -62,6 +65,7 @@ export const authSlice = createSlice({
     setPosts,
     setPost,
     setNotifications,
+    setMessages,
   } = authSlice.actions;
   
 export default authSlice.reducer; // Exporting the authSlice reducer for use in the Redux store

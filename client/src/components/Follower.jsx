@@ -8,7 +8,7 @@ import FlexBetween from "../components/FlexBetween";
 import ProfileImage from "../components/ProfileImage";
 
 // Importing necessary dependencies and components
-const Follower = ({ followerId, name,profileImage }) => {
+const Follower = ({ followerId, name,profileImage}) => {
   // Redux hooks for dispatching actions and accessing state
   const dispatch = useDispatch();
   const navigate = useNavigate();
