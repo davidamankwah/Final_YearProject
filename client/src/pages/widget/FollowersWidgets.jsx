@@ -4,11 +4,15 @@ import Follower from "../../components/Follower";
 import StyledWrapper from "../../components/Wrapper";
 import { useDispatch, useSelector } from "react-redux";
 import { setFollowers } from "../../state";
+import { useNavigate } from "react-router-dom";
 
 const FollowersWidgets = ({ userId, onSelectReceiver }) => { // Pass onSelectReceiver as a prop
   const { palette } = useTheme();
   const [followers, setFollowers] = useState([]);
   const token = useSelector((state) => state.token);
+  const navigate = useNavigate();
+
+
 
   // Function to fetch followers for the given user
   const getFollowers = async () => {
@@ -30,7 +34,13 @@ const FollowersWidgets = ({ userId, onSelectReceiver }) => { // Pass onSelectRec
 
   const handleSendMessage = (followerId) => {
     onSelectReceiver(followerId); // Call onSelectReceiver with the followerId when message button is clicked
+    //navigate(`/chats/`);
   };
+
+  const handleChatClick = () => {
+    console.log('Navigating to chat');
+    navigate(`/chats/`);
+   };
 
   return (
     <StyledWrapper>
@@ -53,7 +63,7 @@ const FollowersWidgets = ({ userId, onSelectReceiver }) => { // Pass onSelectRec
               name={`${follower.userName}`}
               profileImage={follower.picturePath}
             />
-            <Button variant="contained" onClick={() => handleSendMessage(follower._id)}>Message</Button> {/* Add message button */}
+            <Button variant="contained"  onClick={() => handleSendMessage(follower._id)} >Message</Button> {/* Add message button */}
           </Box>
         ))}
       </Box>

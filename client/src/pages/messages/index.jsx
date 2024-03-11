@@ -8,10 +8,13 @@ import FollowersWidgets from '../widget/FollowersWidgets';
 const MessagePage = () => {
   const dispatch = useDispatch();
   const loggedInUserId = useSelector((state) => state.user._id);
+  const loggedInUsername = useSelector((state) => state.user.userName);
   const [messageContent, setMessageContent] = useState('');
   const [senderMessages, setSenderMessages] = useState([]);
   const [receiverMessages, setReceiverMessages] = useState([]);
   const [selectedReceiverId, setSelectedReceiverId] = useState(null);
+  const token = useSelector((state) => state.token);
+  const [receiverUsername, setReceiverUsername] = useState('');
 
   useEffect(() => {
     // Fetch messages sent by the logged-in user (sender)
@@ -44,10 +47,34 @@ const MessagePage = () => {
       }
     };
 
-
     fetchSenderMessages();
     fetchReceiverMessages();
   }, [loggedInUserId]);
+
+  useEffect(() => {
+    // Fetch receiver's username when selected
+    const fetchReceiverUsername = async () => {
+      if (selectedReceiverId) {
+        try {
+          const response = await fetch(`http://localhost:4000/users/${selectedReceiverId}`, {
+            method: "GET",
+            headers: {Permitted: `Bearer ${token}` },
+          });
+          if (response.ok) {
+            const receiverData = await response.json();
+            setReceiverUsername(receiverData.userName);
+          } else {
+            console.error('Failed to fetch receiver username');
+          }
+        } catch (error) {
+          console.error('Error fetching receiver username:', error);
+        }
+      }
+    };
+    
+
+    fetchReceiverUsername();
+  }, [selectedReceiverId, token]);
 
   const sendMessage = async () => {
     try {
@@ -63,15 +90,14 @@ const MessagePage = () => {
         },
         body: JSON.stringify({
           sender: loggedInUserId,
-          receiver: selectedReceiverId, // Use selected receiver's ID
+          receiver: selectedReceiverId,
           content: messageContent,
         }),
       });
 
       if (response.ok) {
         const newMessage = await response.json();
-        // Update messages array with the new message
-        dispatch(setMessages([newMessage])); // Pass new message as an array
+        dispatch(setMessages([newMessage]));
         setMessageContent('');
       } else {
         console.error('Failed to send message');
@@ -81,29 +107,21 @@ const MessagePage = () => {
     }
   };
 
-  const markAsRead = async (messageId) => {
+  const deleteMessage = async (messageId) => {
     try {
-      const response = await fetch(`http://localhost:4000/messages/${messageId}/read`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+      const response = await fetch(`http://localhost:4000/messages/${messageId}`, {
+        method: 'DELETE',
       });
 
       if (response.ok) {
-        // Update the message's read status locally
-        const updatedMessages = senderMessages.map(message => {
-          if (message._id === messageId) {
-            return { ...message, read: true };
-          }
-          return message;
-        });
-        setSenderMessages(updatedMessages);
+        // Filter out the deleted message from the local state
+        setSenderMessages(senderMessages.filter(message => message._id !== messageId));
+        setReceiverMessages(receiverMessages.filter(message => message._id !== messageId));
       } else {
-        console.error('Failed to mark message as read');
+        console.error('Failed to delete message');
       }
     } catch (error) {
-      console.error('Error marking message as read:', error);
+      console.error('Error deleting message:', error);
     }
   };
 
@@ -111,18 +129,24 @@ const MessagePage = () => {
     <Box>
       <Navbar />
       <Box p={2}>
-      <Typography variant="h2" gutterBottom>Messages Page</Typography>
-        <FollowersWidgets // Render the FollowersWidget component to allow selecting a follower as the receiver
+        <Typography variant="h2" gutterBottom>Messages Page</Typography>
+        <FollowersWidgets
           userId={loggedInUserId}
-          onSelectReceiver={setSelectedReceiverId} // Pass setSelectedReceiverId function to handle follower selection
+          onSelectReceiver={setSelectedReceiverId}
         />
         <Typography variant="h4" gutterBottom>Sent Messages</Typography>
         {senderMessages.map((message) => (
-          <Typography key={message._id}>{message.content}</Typography>
+          <Box key={message._id}>
+            <Typography>{loggedInUsername}: {message.content}</Typography>
+            <Button variant="outlined" onClick={() => deleteMessage(message._id)}>Delete</Button>
+          </Box>
         ))}
         <Typography variant="h4" gutterBottom>Received Messages</Typography>
         {receiverMessages.map((message) => (
-          <Typography key={message._id}>{message.content}</Typography>
+          <Box key={message._id}>
+            <Typography>{receiverUsername}: {message.content}</Typography>
+            <Button variant="outlined" onClick={() => deleteMessage(message._id)}>Delete</Button>
+          </Box>
         ))}
         <TextField
           label="Message"

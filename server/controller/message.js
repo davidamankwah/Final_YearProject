@@ -35,19 +35,13 @@ export const getMessagesByReceiver = async (req, res) => {
   }
 };
 
-// Controller function to mark a message as read
-export const markMessageAsRead = async (req, res) => {
+export const deleteMessage = async (req, res) => {
   try {
-    const messageId = req.params.id; // Assuming the message ID is passed in the URL params
-    const message = await Message.findById(messageId);
-    if (!message) {
-      return res.status(404).json({ message: 'Message not found' });
-    }
-    message.read = true;
-    await message.save();
-    res.status(200).json({ message: 'Message marked as read' });
+    const { messageId } = req.params;
+    await Message.findByIdAndDelete(messageId);
+    res.status(204).end();
   } catch (error) {
-    console.error('Error marking message as read:', error);
+    console.error('Error deleting message:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 };
