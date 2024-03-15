@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Box, Button, TextField, Typography } from '@mui/material';
+import { DeleteOutlined } from "@mui/icons-material";
 import Navbar from '../../pages/navbar';
 import { setMessages } from '../../state';
 import FollowersWidgets from '../widget/FollowersWidgets';
@@ -14,7 +15,6 @@ const MessagePage = () => {
   const [receiverMessages, setReceiverMessages] = useState([]);
   const [selectedReceiverId, setSelectedReceiverId] = useState(null);
   const token = useSelector((state) => state.token);
-  const [receiverUsername, setReceiverUsername] = useState('');
 
   useEffect(() => {
     // Fetch messages sent by the logged-in user (sender)
@@ -51,31 +51,6 @@ const MessagePage = () => {
     fetchReceiverMessages();
   }, [loggedInUserId]);
 
-  useEffect(() => {
-    // Fetch receiver's username when selected
-    const fetchReceiverUsername = async () => {
-      if (selectedReceiverId) {
-        try {
-          const response = await fetch(`http://localhost:4000/users/${selectedReceiverId}`, {
-            method: "GET",
-            headers: {Permitted: `Bearer ${token}` },
-          });
-          if (response.ok) {
-            const receiverData = await response.json();
-            setReceiverUsername(receiverData.userName);
-          } else {
-            console.error('Failed to fetch receiver username');
-          }
-        } catch (error) {
-          console.error('Error fetching receiver username:', error);
-        }
-      }
-    };
-    
-
-    fetchReceiverUsername();
-  }, [selectedReceiverId, token]);
-
   const sendMessage = async () => {
     try {
       if (!selectedReceiverId) {
@@ -87,6 +62,7 @@ const MessagePage = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}` // Include authorization token
         },
         body: JSON.stringify({
           sender: loggedInUserId,
@@ -138,14 +114,14 @@ const MessagePage = () => {
         {senderMessages.map((message) => (
           <Box key={message._id}>
             <Typography>{loggedInUsername}: {message.content}</Typography>
-            <Button variant="outlined" onClick={() => deleteMessage(message._id)}>Delete</Button>
+            <DeleteOutlined variant="outlined" onClick={() => deleteMessage(message._id)}  sx={{ color: "red" }}>Delete</DeleteOutlined>
           </Box>
         ))}
         <Typography variant="h4" gutterBottom>Received Messages</Typography>
         {receiverMessages.map((message) => (
           <Box key={message._id}>
-            <Typography>{receiverUsername}: {message.content}</Typography>
-            <Button variant="outlined" onClick={() => deleteMessage(message._id)}>Delete</Button>
+            <Typography>{message.sender.userName}: {message.content}</Typography>
+            <DeleteOutlined variant="outlined" onClick={() => deleteMessage(message._id)} sx={{ color: "red" }}></DeleteOutlined>
           </Box>
         ))}
         <TextField
