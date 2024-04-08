@@ -1,41 +1,40 @@
-export const colorTokens = {
-  grey: {
-    0: "#F5F5F5",
-    10: "#EEEEEE",
-    50: "#CCCCCC",
-    100: "#AAAAAA",
-    200: "#888888",
-    300: "#666666",
-    400: "#444444",
-    500: "#333333",
-    600: "#222222",
-    700: "#111111",
-    800: "#000000",
-    900: "#000000",
-    1000: "#000000",
-  },
-  primary: {
-    50: "#E3F2FD",
-    100: "#BBDEFB",
-    200: "#90CAF9",
-    300: "#64B5F6",
-    400: "#42A5F5",
-    500: "#2196F3",
-    600: "#1E88E5",
-    700: "#1976D2",
-    800: "#1565C0",
-    900: "#0D47A1",
-  },
-};
-
-// mui theme settings
 export const themeSettings = (mode) => {
+  const colorTokens = {
+    grey: {
+      0: "#F5F5F5",
+      10: "#EEEEEE",
+      50: "#CCCCCC",
+      100: "#AAAAAA",
+      200: "#888888",
+      300: "#666666",
+      400: "#444444",
+      500: "#333333",
+      600: "#222222",
+      700: "#111111",
+      800: "#000000",
+      900: "#000000",
+      1000: "#000000",
+    },
+    primary: {
+      50: "#E3F2FD",
+      100: "#BBDEFB",
+      200: "#90CAF9",
+      300: "#64B5F6",
+      400: "#42A5F5",
+      500: "#2196F3",
+      600: "#1E88E5",
+      700: "#1976D2",
+      800: "#1565C0",
+      900: "#0D47A1",
+    },
+  };
+
   return {
     palette: {
       mode: mode,
       ...(mode === "dark"
         ? {
-            // palette values for dark mode
+            // Dark mode palette
             primary: {
               dark: colorTokens.primary[200],
               main: colorTokens.primary[500],
@@ -54,7 +53,7 @@ export const themeSettings = (mode) => {
             },
           }
         : {
-            // palette values for light mode
+            // Light mode palette
             primary: {
               dark: colorTokens.primary[700],
               main: colorTokens.primary[500],
@@ -76,29 +75,24 @@ export const themeSettings = (mode) => {
     typography: {
       fontFamily: ["Roboto", "sans-serif"].join(","),
       fontSize: 14,
+      // Customizing heading styles
       h1: {
         fontFamily: ["Roboto", "sans-serif"].join(","),
         fontSize: 48,
+        fontWeight: 700, // Increased font weight
       },
       h2: {
         fontFamily: ["Roboto", "sans-serif"].join(","),
         fontSize: 36,
+        fontWeight: 600, // Increased font weight
       },
-      h3: {
-        fontFamily: ["Roboto", "sans-serif"].join(","),
-        fontSize: 28,
-      },
-      h4: {
-        fontFamily: ["Roboto", "sans-serif"].join(","),
-        fontSize: 24,
-      },
-      h5: {
-        fontFamily: ["Roboto", "sans-serif"].join(","),
-        fontSize: 18,
-      },
-      h6: {
-        fontFamily: ["Roboto", "sans-serif"].join(","),
-        fontSize: 16,
+      // Adding custom button style
+      button: {
+        textTransform: 'capitalize',
+        fontWeight: 600,
+        borderRadius: 8, // Rounded corners
+        boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.1)', // Soft shadow
+        padding: '10px 20px', // Increased padding
       },
     },
   };

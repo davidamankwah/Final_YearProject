@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux"; // Importing useSelector to access data from Redux store
+import { useSelector } from "react-redux";
 import io from "socket.io-client";
 import HomeIcon from '@mui/icons-material/Home';
 import { useNavigate } from "react-router-dom";
@@ -14,8 +14,8 @@ const ChatsPage = () => {
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
   const [messageList, setMessageList] = useState([]);
+  const [roomName, setRoomName] = useState(""); 
 
-  // Accessing userName from Redux store
   const userName = useSelector((state) => state.user.userName);
 
   useEffect(() => {
@@ -31,13 +31,14 @@ const ChatsPage = () => {
   const connectToRoom = () => {
     setLoggedIn(true);
     socket.emit("join_room", room);
+    setRoomName(room);
   };
 
   const sendMessage = async () => {
     let messageContent = {
       room: room,
       content: {
-        author: userName, // Assigning the current user's name
+        author: userName,
         message: message,
       },
     };
@@ -48,7 +49,6 @@ const ChatsPage = () => {
   };
 
   const handleHomeClick = () => {
-    console.log('Navigating to home');
     navigate(`/home/`);
   };
 
@@ -69,12 +69,13 @@ const ChatsPage = () => {
         </div>
       ) : (
         <div className="chatContainer">
+          <h2>Chat Room: {roomName}</h2> {/* Display the name of the chat room */}
           <div className="messages">
             {messageList.map((val, index) => (
               <div
                 className="messageContainer"
                 id={val.author === userName ? "You" : "Other"}
-                key={index} // Assuming val has a unique identifier like an id
+                key={index}
               >
                 <div className="messageIndividual">
                   {val.author}: {val.message}

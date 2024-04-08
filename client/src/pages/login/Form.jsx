@@ -50,6 +50,12 @@ const Form = () => {
   const isRegister = pageType === "register";
 
   const register = async (values, onSubmitProps) => {
+
+     // Check if any of the required fields are empty
+     if (!values.pic) {
+      console.log("Please upload an image.");
+    }
+      
     // this allows us to send form info with image
     console.log("Register function called with values:", values)
     const formData = new FormData();

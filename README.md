@@ -1,1 +1,3 @@
-# Final_YearProject
+# Applied Project & Minor Dissertation
+
+# ConnectSphere

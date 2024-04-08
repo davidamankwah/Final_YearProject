@@ -1,7 +1,7 @@
 import User from "../models/User.js";
 
 
-export const getUserById = async (req, res) => {
+export const getUserInfoById = async (req, res) => {
   try {
     const { id } = req.params;
     const user = await User.findById(id);
@@ -31,7 +31,7 @@ export const getUserFollowers = async (req, res) => {
 };
 
 /* UPDATE */
-export const addOrRemoveFollowers = async (req, res) => {
+export const modifyFollowerStatus = async (req, res) => {
   try {
     const { id, followerId: followerId } = req.params;
     const user = await User.findById(id);

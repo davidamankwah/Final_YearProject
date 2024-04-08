@@ -113,14 +113,14 @@ const MessagePage = () => {
         <Typography variant="h4" gutterBottom>Sent Messages</Typography>
         {senderMessages.map((message) => (
           <Box key={message._id}>
-            <Typography>{loggedInUsername}: {message.content}</Typography>
+            <Typography>{loggedInUsername} to {message.receiver.userName}: {message.content}</Typography>
             <DeleteOutlined variant="outlined" onClick={() => deleteMessage(message._id)}  sx={{ color: "red" }}>Delete</DeleteOutlined>
           </Box>
         ))}
         <Typography variant="h4" gutterBottom>Received Messages</Typography>
         {receiverMessages.map((message) => (
           <Box key={message._id}>
-            <Typography>{message.sender.userName}: {message.content}</Typography>
+            <Typography>from {message.sender.userName} to {loggedInUsername}: {message.content}</Typography>
             <DeleteOutlined variant="outlined" onClick={() => deleteMessage(message._id)} sx={{ color: "red" }}></DeleteOutlined>
           </Box>
         ))}

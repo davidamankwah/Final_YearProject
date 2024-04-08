@@ -1,8 +1,8 @@
 import express from "express";
 import {
-  getUserById,
+  getUserInfoById,
   getUserFollowers,
-  addOrRemoveFollowers,
+  modifyFollowerStatus,
   searchUsers,
 } from "../controller/user.js"
 import { checkToken } from "../middleware/auth.js";
@@ -10,13 +10,13 @@ import { checkToken } from "../middleware/auth.js";
 const router = express.Router();
 
 // Get user information by ID
-router.get("/:id", checkToken, getUserById);
+router.get("/:id", checkToken, getUserInfoById);
 
 // Get user's friend list by ID
 router.get("/:id/followers", checkToken, getUserFollowers);
 
 // Add or remove a friend for a user
-router.patch("/:id/:followerId", checkToken, addOrRemoveFollowers);
+router.patch("/:id/:followerId", checkToken, modifyFollowerStatus);
 
 // Search users by username
 router.get('/search/:query',searchUsers);

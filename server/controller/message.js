@@ -16,7 +16,7 @@ export const createMessage = async (req, res) => {
 export const getMessagesBySender = async (req, res) => {
   try {
     const { senderId } = req.params;
-    const messages = await Message.find({ sender: senderId }).populate('sender', 'userName'); // Populate the sender's name
+    const messages = await Message.find({ sender: senderId }).populate('receiver', 'userName'); // Populate the sender's name
     res.json(messages);
   } catch (error) {
     console.error('Error fetching messages by sender:', error);
