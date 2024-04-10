@@ -6,6 +6,18 @@ ConnectSphere is a social media platform designed to facilitate connections, con
 - client: This folder contains the frontend code for the web application.
 - server: This folder contains the backend code for the web application.
 
+<h2>Features: </h2>
+
+1. User authencation: Secure login and registration with token-based authentication.
+2. Content posting: Users can create, edit, and delete images, videos, gifs, and text.
+3. User interaction: Ability to like/dislike posts, follow/unfollow other users, and receive notifications. 
+4. Real-time chats: Live chat features that allow you to send and receive messages as well as join rooms.
+5. Notification: Users receive real-time notifications for likes.
+6. Search functionality: Search users by username with responsive search results.
+7. User profiles: View user profiles with important details and follower counts.
+8. Messages: Users can send and receive messages.
+
+
 <h2>Technologies Used</h2>
 
 * React.js: The frontend was developed using React.
@@ -30,17 +42,17 @@ ConnectSphere is a social media platform designed to facilitate connections, con
 
 * Render: Render was used to deploy the project.
 
-<h2>Instructions:</h2>
+<h2>Instructions</h2>
 
 * Ensure that Node.js and npm are installed on your system
 
-* Clone the project repository from on your system.
+* Clone the project repository from on the system.
 
 ```bash
 git clone https://github.com/davidamankwah/Final_YearProject.git
 cd Final_YearProject
 ```
-* Navigate to the project directory in your terminal.
+* Navigate to the project directory in the terminal.
 
 ```bash
 cd Final_YearProject/client
@@ -52,5 +64,25 @@ cd Final_YearProject/server
 npm install
 ```
 
+<h3>Running the project: </h3>
+
+* Start the backend server by running the follwing command in the backend directory. 
+
+ ```bash
+nodemon index.js
+```
+
+* Start the frontend development by running the follwing command in the frontend directory. 
+
+ ```bash
+npm start
+```
+
+* Access the application in the web browser at 'http://localhost:300'.
+
+<h2>Cloud Deployment</h2>
+
+* Access the ConnectSphere application through Render.com, see [this link](https://frontend-dnnx.onrender.com/).
+
 ## Author
-David Amankwah - G00394825
+<b>David Amankwah - G00394825</b>
