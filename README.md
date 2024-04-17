@@ -6,7 +6,7 @@ ConnectSphere is a social media platform designed to facilitate connections, con
 - client: This folder contains the frontend code for the web application.
 - server: This folder contains the backend code for the web application.
 
-<h2>Features: </h2>
+<h2>Features </h2>
 
 1. User authencation: Secure login and registration with token-based authentication.
 2. Content posting: Users can create, edit, and delete images, videos, gifs, and text.
@@ -15,7 +15,7 @@ ConnectSphere is a social media platform designed to facilitate connections, con
 5. Notification: Users receive real-time notifications for likes.
 6. Search functionality: Search users by username with responsive search results.
 7. User profiles: View user profiles with important details and follower counts.
-8. Messages: Users can send and receive messages.
+8. Messages: Users can send, receive and delete messages.
 
 
 <h2>Technologies Used</h2>
@@ -46,7 +46,7 @@ ConnectSphere is a social media platform designed to facilitate connections, con
 
 * Ensure that Node.js and npm are installed on your system
 
-* Clone the project repository from on the system.
+* Clone the project repository from your system.
 
 ```bash
 git clone https://github.com/davidamankwah/Final_YearProject.git
@@ -78,11 +78,25 @@ nodemon index.js
 npm start
 ```
 
-* Access the application in the web browser at 'http://localhost:300'.
+* The application runs in the web browser at 'http://localhost:3000'.
 
-<h2>Cloud Deployment</h2>
+<h3>Cloud Deployment</h3>
 
 * Access the ConnectSphere application through Render.com, see [this link](https://frontend-dnnx.onrender.com/).
 
 ## Author
 <b>David Amankwah - G00394825</b>
+
+## Resources
+
+Provided links to resources used:
+
+[Learn Socket.IO](https://www.youtube.com/watch?v=djMy4QsPWiI)
+
+[Learn Formik with Yup](https://www.youtube.com/watch?v=7Ophfq0lEAY&t=313s)
+
+[Learn Redux](https://www.youtube.com/watch?v=5yEG6GhoJBs)
+
+[Learn JWT](https://www.youtube.com/watch?v=KgXT63wPMPc)
+
+[Learn Multer](https://www.youtube.com/watch?v=EVOFt8Its6I)
