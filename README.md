@@ -5,6 +5,10 @@ ConnectSphere is a social media platform designed to facilitate connections, con
 
 - client: This folder contains the frontend code for the web application.
 - server: This folder contains the backend code for the web application.
+- dissertation: This folder contains the final report work in Latex format.
+- Dissertation.pdf: PDF of the final report. 
+- Screencast_Link.pdf: A PDF with a link to a screencast demonstrating the working software.
+- README.md: This file briefly summarizes the project. 
 
 <h2>Features </h2>
 

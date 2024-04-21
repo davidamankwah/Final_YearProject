@@ -8,6 +8,8 @@ const router = express.Router();
 
 // Route to add a comment to a post
 router.post('/:postId/comments', verifyToken, addComment);
+
+// Route to delete a comment to a post
 router.delete('/:postId/comments/:commentId', verifyToken, deleteComment);
 
 export default router;

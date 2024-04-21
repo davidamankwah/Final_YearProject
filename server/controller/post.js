@@ -1,7 +1,7 @@
 // Importing the Post and User models
 import Post from "../models/Post.js";
 import User from "../models/User.js";
-import jwt from 'jsonwebtoken';
+
 
 // Controller function to create a new post
 export const createPost = async (req, res) => {
@@ -143,7 +143,6 @@ export const deletePost = async (req, res) => {
   }
 };
 
-// post.js
 
 // Controller function to update a post
 export const updatePost = async (user, postId, text) => {

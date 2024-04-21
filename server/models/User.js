@@ -33,7 +33,7 @@ const UserSchema = new mongoose.Schema(
       },
       
     },
-     { timestamps: true } // Add timestamps to the schema
+     { timestamps: true } // Add timestamps to the schema, Automatically add createdAt and updatedAt timestamps
 );
 
 // Create the User model using the UserSchema

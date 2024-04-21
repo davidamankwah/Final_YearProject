@@ -1,6 +1,7 @@
 // Import necessary modules
 import Message from '../models/Message.js';
 
+// Controller function to create a new message
 export const createMessage = async (req, res) => {
   try {
     const { sender, receiver, content } = req.body;
@@ -13,6 +14,7 @@ export const createMessage = async (req, res) => {
   }
 };
 
+// Controller function to get messages by sender ID
 export const getMessagesBySender = async (req, res) => {
   try {
     const { senderId } = req.params;
@@ -24,6 +26,7 @@ export const getMessagesBySender = async (req, res) => {
   }
 };
 
+// Controller function to get messages by receiver ID
 export const getMessagesByReceiver = async (req, res) => {
   try {
     const { receiverId } = req.params;
@@ -35,10 +38,11 @@ export const getMessagesByReceiver = async (req, res) => {
   }
 };
 
+// Controller function to delete a message by ID
 export const deleteMessage = async (req, res) => {
   try {
     const { messageId } = req.params;
-    await Message.findByIdAndDelete(messageId);
+    await Message.findByIdAndDelete(messageId); // Find and delete the message by its ID
     res.status(204).end();
   } catch (error) {
     console.error('Error deleting message:', error);

@@ -1,6 +1,7 @@
 // notification.controller.js
 import Notification from "../models/Notifications.js";
 
+// Controller function to create a new notification
 export const createNotification = async (req, res) => {
     try {
       const { message } = req.body;
@@ -12,4 +13,4 @@ export const createNotification = async (req, res) => {
       res.status(500).json({ error: 'Internal server error' });
     }
   };
-// Implement other CRUD operations as needed
+

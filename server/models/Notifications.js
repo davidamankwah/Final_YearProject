@@ -1,8 +1,9 @@
 // notification.model.js
 import mongoose from 'mongoose';
 
+// The schema for notifications
 const notificationSchema = new mongoose.Schema({
-  message: String,
+  message: String, // Message content of the notification
 },
 { timestamps: true });
 

@@ -25,15 +25,15 @@ router.patch("/:id/like", checkToken, likePost);
 // Route to dislike or undislike a post, requiring authentication check
 router.patch("/:id/dislike", checkToken, dislikePost);
 
-router.delete("/:id", checkToken, deletePost); // Add this line for the delete route
+router.delete("/:id", checkToken, deletePost); // The delete route
 
+//route to update post
 router.patch('/:postId', verifyToken, async (req, res) => {
     const { postId } = req.params;
     const { text } = req.body;
     const user = req.user;
 
     try {
-        // Assuming your updatePost function is asynchronous
         const updatedPost = await updatePost(user, postId, text);
         res.status(200).json(updatedPost);
     } catch (error) {
@@ -43,5 +43,4 @@ router.patch('/:postId', verifyToken, async (req, res) => {
 });
 
 
-// Exporting the router for use in other parts of the application
 export default router;

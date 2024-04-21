@@ -3,7 +3,8 @@ import { login} from "../controller/auth.js";
 
 const router = express.Router();
 
-router.post("/login", login);
+// Route for user login
+router.post("/login", login); // Handle POST requests to /login route using the login controller function
 
 
 export default router;

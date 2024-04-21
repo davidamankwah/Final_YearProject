@@ -1,6 +1,6 @@
 import User from "../models/User.js";
 
-
+// Controller function to get user information by ID
 export const getUserInfoById = async (req, res) => {
   try {
     const { id } = req.params;
@@ -11,14 +11,17 @@ export const getUserInfoById = async (req, res) => {
   }
 };
 
+// Controller function to get followers of a user
 export const getUserFollowers = async (req, res) => {
   try {
     const { id } = req.params;
     const user = await User.findById(id);
 
+    // Retrieve followers' information
     const followers = await Promise.all(
       user.followers.map((id) => User.findById(id))
     );
+    // Format followers' information for response
     const formattedFollowers = followers.map(
       ({ _id, userName, picturePath }) => {
         return { _id, userName, picturePath };
@@ -31,12 +34,14 @@ export const getUserFollowers = async (req, res) => {
 };
 
 /* UPDATE */
+// Controller function to modify follower status (follow/unfollow)
 export const modifyFollowerStatus = async (req, res) => {
   try {
     const { id, followerId: followerId } = req.params;
     const user = await User.findById(id);
     const follower = await User.findById(followerId);
 
+    // If follower already exists, unfollow; otherwise, follow
     if (user.followers.includes(followerId)) {
       user.followers = user.followers.filter((id) => id !== followerId);
       follower.followers = follower.followers.filter((id) => id !== id);
@@ -44,12 +49,17 @@ export const modifyFollowerStatus = async (req, res) => {
       user.followers.push(followerId);
       follower.followers.push(id);
     }
+
+    // Save changes to database
     await user.save();
     await follower.save();
 
+     // Retrieve updated followers' information
     const followers = await Promise.all(
       user.followers.map((id) => User.findById(id))
     );
+
+    // Format followers' information for response
     const formattedFollowers = followers.map(
       ({ _id, userName, picturePath }) => {
         return { _id, userName, picturePath };
@@ -62,6 +72,7 @@ export const modifyFollowerStatus = async (req, res) => {
   }
 };
 
+// Controller function to get recommended users excluding current user and users already followed
 export const getRecommendedUsers = async (req, res) => {
   try {
     // Exclude the current user and users the current user is already following
@@ -82,7 +93,7 @@ export const searchUsers = async (req, res) => {
     const { query } = req.params;
     console.log('Search Query:', query);
 
-    // Use a case-insensitive regular expression to perform the search
+    // Case-insensitive regular expression to perform the search
     const users = await User.find({
       userName: { $regex: new RegExp(query, 'i') },
     });

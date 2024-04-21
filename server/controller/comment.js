@@ -1,6 +1,7 @@
 // comment.js
 import Post from "../models/Post.js";
 
+// Controller function to add a comment to a post
 export const addComment = async (req, res) => {
   try {
     const { userId, userName, text } = req.body;
@@ -8,14 +9,15 @@ export const addComment = async (req, res) => {
 
     const post = await Post.findById(postId);
 
+     // Check if the post exists
     if (!post) {
       return res.status(404).json({ message: 'Post not found' });
     }
 
-    const newComment = { userId, userName, text };
-    post.comments.push(newComment);
+    const newComment = { userId, userName, text }; // Create a new comment object
+    post.comments.push(newComment); // Add the new comment to the post's comments array
 
-    const updatedPost = await post.save();
+    const updatedPost = await post.save(); // Save the updated post to the database
 
     res.status(201).json(updatedPost);
   } catch (error) {
@@ -24,6 +26,7 @@ export const addComment = async (req, res) => {
   }
 };
 
+// Controller function to delete a comment from a post
 export const deleteComment = async (req, res) => {
   try {
     const { postId, commentId } = req.params;
@@ -33,10 +36,6 @@ export const deleteComment = async (req, res) => {
 
     // Find the index of the comment in the post's comments array
     const commentIndex = post.comments.findIndex(comment => comment._id.toString() === commentId);
-
-    // Check if the comment belongs to the user (you might need to compare userId)
-    // For example: if (post.comments[commentIndex].userId.toString() !== req.user.id) ...
-    // Ensure that only the owner of the comment can delete it
 
     // Remove the comment from the array
     post.comments.splice(commentIndex, 1);
