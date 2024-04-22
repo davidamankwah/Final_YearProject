@@ -61,7 +61,7 @@ import {EditOutlined,DeleteOutlined,ImageOutlined,} from "@mui/icons-material";
             }}
           />
         </FlexBetween>
-        {/* Image upload section */}
+        {/* File upload section */}
         {isImage && (
           <Box
             border={`1px solid ${medium}`}

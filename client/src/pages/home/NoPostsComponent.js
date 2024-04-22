@@ -2,7 +2,7 @@
 import React from 'react';
 
 const NoPostsComponent = () => {
-  return <p>No posts available.</p>; // You can customize this message
+  return <p>No posts available.</p>; // no post message
 };
 
 export default NoPostsComponent;

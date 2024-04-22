@@ -76,7 +76,7 @@ const patchLike = async () => {
       // Emit a socket event to notify users of the like action
       socket.emit('like', { postId, userId: loggedInUserId, userName: names });
 
-      // Optionally, you can also handle the notification here on the client-side
+      //handles the notification on the client-side
       console.log('Liked post:', postId);
       
     } else {
@@ -201,7 +201,7 @@ const handleReplySubmit = async (commentId) => {
   }
 };
 
-// In your React component
+
 const handleDeleteComment = async (postId, commentId) => {
   try {
     const response = await fetch(`http://localhost:4000/posts/${postId}/comments/${commentId}`, {

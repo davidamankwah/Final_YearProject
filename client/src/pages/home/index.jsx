@@ -47,6 +47,6 @@ const HomePage = () => {
   );
 };
 
-// You can create LoadingComponent and NoPostsComponent as needed.
+
 
 export default HomePage;

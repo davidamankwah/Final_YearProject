@@ -2,7 +2,7 @@
 import React from 'react';
 
 const LoadingComponent = () => {
-  return <p>Loading...</p>; // You can replace this with your loading spinner or any other loading indicator
+  return <p>Loading...</p>; // a loading indicator
 };
 
 export default LoadingComponent;
