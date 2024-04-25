@@ -73,7 +73,7 @@ npm install
 * Start the server by running the follwing command in the backend directory. 
 
  ```bash
-nodemon index.js
+node index.js
 ```
 
 * Start the client by running the follwing command in the frontend directory. 
