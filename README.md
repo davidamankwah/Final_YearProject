@@ -59,10 +59,10 @@ cd Final_YearProject
 * Navigate to the project directory in the terminal.
 
 ```bash
-cd Final_YearProject/client
-cd Final_YearProject/server
+cd client
+cd server
 ```
-* Rum 'npm install' to install project dependencies for both frontend and backend.
+* Rum 'npm install' to install project dependencies for both client and server.
  
  ```bash
 npm install
@@ -70,13 +70,13 @@ npm install
 
 <h3>Running the project: </h3>
 
-* Start the backend server by running the follwing command in the backend directory. 
+* Start the server by running the follwing command in the backend directory. 
 
  ```bash
 nodemon index.js
 ```
 
-* Start the frontend development by running the follwing command in the frontend directory. 
+* Start the client by running the follwing command in the frontend directory. 
 
  ```bash
 npm start
@@ -97,10 +97,4 @@ Provided links to resources used:
 
 [Learn Socket.IO](https://www.youtube.com/watch?v=djMy4QsPWiI)
 
-[Learn Formik with Yup](https://www.youtube.com/watch?v=7Ophfq0lEAY&t=313s)
-
-[Learn Redux](https://www.youtube.com/watch?v=5yEG6GhoJBs)
-
 [Learn JWT](https://www.youtube.com/watch?v=KgXT63wPMPc)
-
-[Learn Multer](https://www.youtube.com/watch?v=EVOFt8Its6I)

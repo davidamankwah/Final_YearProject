@@ -49,6 +49,7 @@ const Form = () => {
   const isLogin = pageType === "login";
   const isRegister = pageType === "register";
 
+  // Register function for handling form submission
   const register = async (values, onSubmitProps) => {
 
      // Check if any of the required fields are empty
@@ -58,12 +59,14 @@ const Form = () => {
       
     // this allows us to send form info with image
     console.log("Register function called with values:", values)
-    const formData = new FormData();
+    // Prepare form data for submission with image
+    const formData = new FormData(); 
     for (let value in values) {
       formData.append(value, values[value]);
     }
     formData.append("picturePath", values.pic.name);
 
+  // Send registration request  
   const savedUserResponse = await fetch("http://localhost:4000/auth/register", {
   method: "POST",
   body: formData,
@@ -72,14 +75,17 @@ const Form = () => {
     const savedUser = await savedUserResponse.json();
     onSubmitProps.resetForm();
 
+    // Redirect to login page after successful registration
     if (savedUser) {
       setPageType("login");
     }
   };
 
+  // Login function for handling form submission
   const login = async (values, onSubmitProps) => {
     try {
       console.log("Logging in with values:", values);
+      // Send login request
       const loggedInResponse = await fetch("http://localhost:4000/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -88,7 +94,8 @@ const Form = () => {
       const loggedIn = await loggedInResponse.json();
       console.log("Logged in response:", loggedIn);
       onSubmitProps.resetForm();
-  
+      
+      // Dispatch login action and navigate to home page
       if (loggedIn) {
         console.log("Dispatching login action with user:", loggedIn.user);
         dispatch(
@@ -105,7 +112,7 @@ const Form = () => {
     }
   };
   
-
+  // Handle form submission based on page type (login/register)
   const handleFormSubmit = async (values, onSubmitProps) => {
     if (isLogin) await login(values, onSubmitProps);
     if (isRegister) await register(values, onSubmitProps);
@@ -136,6 +143,7 @@ const Form = () => {
               "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
             }}
           >
+            {/* Username field for registration */}
             {
               isRegister && (
                 <>
@@ -149,7 +157,7 @@ const Form = () => {
                 helperText={touched.userName && errors.userName}
                  sx={{ gridColumn: "span 2" }}
                 />
-
+                {/* Picture upload field */}
                  <Box
                   gridColumn="span 4"
                   border={`1px solid ${palette.neutral.medium}`}
@@ -186,6 +194,7 @@ const Form = () => {
                 </>
               )
             }
+              {/* Email address field */}
                <TextField
               label="Email Address"
               onBlur={handleBlur}
@@ -196,6 +205,7 @@ const Form = () => {
               helperText={touched.emailAddress && errors.emailAddress}
               sx={{ gridColumn: "span 4" }}
             />
+            {/* Password field */}
             <TextField
               label="Password"
               type="password"

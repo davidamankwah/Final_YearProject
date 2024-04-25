@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { Box, Divider, IconButton, Typography } from "@mui/material";
 
+// Component for displaying comment replies
 const CommentReplies = ({ replies }) => {
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(false); // State to toggle visibility of replies
 
+   // Function to toggle visibility of replies
   const toggleVisibility = () => {
     setIsVisible(!isVisible);
   };

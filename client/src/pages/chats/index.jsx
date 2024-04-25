@@ -6,9 +6,11 @@ import { useNavigate } from "react-router-dom";
 import "./chats.css";
 
 let socket;
+// the connection port for the socket
 const CONNECTION_PORT = "http://localhost:4001";
 
 const ChatsPage = () => {
+   // State variables
   const [loggedIn, setLoggedIn] = useState(false);
   const [room, setRoom] = useState("");
   const [message, setMessage] = useState("");
@@ -16,24 +18,28 @@ const ChatsPage = () => {
   const [messageList, setMessageList] = useState([]);
   const [roomName, setRoomName] = useState(""); 
 
-  const userName = useSelector((state) => state.user.userName);
-
+  const userName = useSelector((state) => state.user.userName); // Get username from Redux store
+ 
+  // Initialize socket connection
   useEffect(() => {
     socket = io(CONNECTION_PORT);
   }, [CONNECTION_PORT]);
 
+   // Listen for incoming messages
   useEffect(() => {
     socket.on("receive_message", (data) => {
       setMessageList([...messageList, data]);
     });
   });
 
+   // Connect to chat room
   const connectToRoom = () => {
     setLoggedIn(true);
     socket.emit("join_room", room);
     setRoomName(room);
   };
 
+  // Send message to chat room
   const sendMessage = async () => {
     let messageContent = {
       room: room,
@@ -48,6 +54,7 @@ const ChatsPage = () => {
     setMessage("");
   };
 
+  // Navigate to home page
   const handleHomeClick = () => {
     navigate(`/home/`);
   };
@@ -83,6 +90,7 @@ const ChatsPage = () => {
               </div>
             ))}
           </div>
+          {/* Message input field */}
           <div className="messageInputs">
             <input
               type="text"
